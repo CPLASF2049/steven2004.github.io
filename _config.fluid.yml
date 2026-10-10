@@ -245,12 +245,41 @@ about:
   # 注意不要用 avatar.png：Fluid 主题自带一个同名的 img/avatar.png，
   # Hexo 里主题资源会覆盖站点资源，用自己的文件名才不会被换掉
   avatar: /img/profile.png
-  name: "李思源"
+  name: "Steven"
   intro: "记录计算机学习日常"
   icons:
     - { class: "iconfont icon-github-fill", link: "https://github.com/CPLASF2049", tip: "GitHub" }
     - { class: "iconfont icon-mail", link: "mailto:hust_steven2004@163.com", tip: "邮箱" }
     - { class: "iconfont icon-rss", link: "/atom.xml", tip: "RSS" }
+
+# ---------- 归档 / 分类 / 标签页 ----------
+# 三张列表页统一用同一张头图，和首页保持一致
+archive:
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+category:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  order_by: "-length"
+  collapse_depth: 0
+  post_order_by: "-date"
+  post_limit: 10
+
+tag:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  tagcloud:
+    min_font: 15
+    max_font: 30
+    unit: px
+    start_color: "#BBBBEE"
+    end_color: "#337ab7"
 
 # ---------- 自定义页 / 404 ----------
 page:
