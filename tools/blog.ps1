@@ -13,7 +13,10 @@
       blog help                 显示帮助
 
   也可以直接用 PowerShell 运行：
-      powershell -ExecutionPolicy Bypass -File scripts\blog.ps1 preview
+      powershell -ExecutionPolicy Bypass -File tools\blog.ps1 preview
+
+  注：这个文件放在 tools\ 而不是 scripts\，因为 scripts\ 是 Hexo 的
+  自定义脚本目录，放进去会被 Hexo 当成 JS 脚本加载并报错。
 #>
 [CmdletBinding()]
 param(

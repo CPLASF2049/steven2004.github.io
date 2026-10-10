@@ -118,7 +118,9 @@ deploy:
   type: git
   repo: https://github.com/CPLASF2049/steven2004.github.io.git
   branch: gh-pages
-  message: 'Site updated: {{ now("YYYY-MM-DD HH:mm:ss") }}'
+  # 注意：这里用的是 Luxon 的格式记号（yyyy-MM-dd），不是 Moment 的 YYYY-MM-DD。
+  # 部署插件用 Nunjucks 渲染这行，写错会得到一个奇怪的提交信息。
+  message: 'Site updated: {{ now("yyyy-MM-dd HH:mm:ss") }}'
   # 如果推送较慢或需要代理，可以改用 SSH 地址：
   # repo: git@github.com:CPLASF2049/steven2004.github.io.git
 

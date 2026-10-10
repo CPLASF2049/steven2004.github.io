@@ -54,7 +54,7 @@ steven2004.github.io/
 ├─ _config.next.yml         NexT 主题配置：改主题只动这个文件
 ├─ package.json             依赖与 npm 脚本
 ├─ blog.cmd                 快捷命令入口
-├─ scripts/blog.ps1         快捷命令的实现
+├─ tools/blog.ps1            快捷命令的实现（不要放进 scripts\，那是 Hexo 保留目录）
 ├─ source/
 │  ├─ _posts/               文章，一篇一个 Markdown 文件
 │  ├─ _data/styles.styl     自定义样式
