@@ -121,10 +121,24 @@ index:
   banner_mask_alpha: 0.3
   slogan:
     enable: true
+    # 写成列表，每次刷新会随机挑一句，配合打字机效果显示
     text:
-      - "记录技术、工具与生活"
-      - "量子计算 · 量子机器学习 · 数学基础"
-      - "把学过的写下来，才算真的学会"
+      - "路漫漫其修远兮，吾将上下而求索。"
+      - "博观而约取，厚积而薄发。"
+      - "纸上得来终觉浅，绝知此事要躬行。"
+      - "千淘万漉虽辛苦，吹尽狂沙始到金。"
+      - "长风破浪会有时，直挂云帆济沧海。"
+      - "会当凌绝顶，一览众山小。"
+      - "山重水复疑无路，柳暗花明又一村。"
+      - "宝剑锋从磨砺出，梅花香自苦寒来。"
+      - "书山有路勤为径，学海无涯苦作舟。"
+      - "问渠那得清如许？为有源头活水来。"
+      - "不积跬步，无以至千里；不积小流，无以成江海。"
+      - "锲而不舍，金石可镂。"
+      - "十年磨一剑，霜刃未曾试。"
+      - "沉舟侧畔千帆过，病树前头万木春。"
+      - "咬定青山不放松，立根原在破岩中。"
+      - "三更灯火五更鸡，正是男儿读书时。"
     api:
       enable: false
   auto_excerpt:
@@ -228,12 +242,15 @@ about:
   banner_img: /img/banner.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  avatar: /img/avatar.png
-  name: "Steven"
-  intro: "记录量子计算、机器学习与编程笔记"
+  # 注意不要用 avatar.png：Fluid 主题自带一个同名的 img/avatar.png，
+  # Hexo 里主题资源会覆盖站点资源，用自己的文件名才不会被换掉
+  avatar: /img/profile.png
+  name: "李思源"
+  intro: "记录计算机学习日常"
   icons:
     - { class: "iconfont icon-github-fill", link: "https://github.com/CPLASF2049", tip: "GitHub" }
-    - { class: "iconfont icon-mail-fill", link: "mailto:318264563@qq.com", tip: "邮箱" }
+    - { class: "iconfont icon-mail", link: "mailto:hust_steven2004@163.com", tip: "邮箱" }
+    - { class: "iconfont icon-rss", link: "/atom.xml", tip: "RSS" }
 
 # ---------- 自定义页 / 404 ----------
 page:

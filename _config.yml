@@ -4,11 +4,11 @@
 
 # Site
 title: Steven's Blog
-subtitle: '记录技术、工具与生活'
+subtitle: '记录计算机学习日常'
 description: >-
-  Steven 的个人博客，记录量子计算、机器学习、编程工具与学习笔记。
-keywords: 博客, 量子计算, 量子机器学习, 数学基础, Hexo, 学习笔记
-author: Steven
+  李思源的博客，记录计算机学习日常：课程笔记、项目实践与踩坑记录。
+keywords: 博客, 计算机学习, 软件工程, 机器学习, 学习笔记
+author: 李思源
 language: zh-CN
 timezone: 'Asia/Shanghai'
 
