@@ -1,13 +1,14 @@
 ---
-title: 同途
+title: 写给女朋友孙雨茜的一首诗
 date: 2026-10-11 02:28:43
 categories:
   - 生活
 tags:
   - 诗
   - 生活
-description: 六月的风，轻轻刷过屏幕，我在人海里意外遇见了你。一首写给她的诗。
-index_img: /img/banner.jpg
+description: 回顾和孙雨茜度过的100天时光——写给女朋友孙雨茜的诗《同途》。
+index_img: /img/cover-tongtu.jpg
+banner_img: /img/cover-tongtu.jpg
 ---
 六月的风，轻轻刷过屏幕
 我在人海里，意外遇见了你

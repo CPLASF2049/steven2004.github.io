@@ -9,7 +9,8 @@ tags:
   - 线性代数
   - 数学基础
 description: 为量子自编码器（QAE）学习整理的数学基础笔记：克罗内克积、狄拉克符号与内外积、迹与密度矩阵、迹距离与保真度、布洛赫球面、量子门基础，每节附自测习题。
-index_img: /img/banner.jpg
+index_img: /img/cover-quantum.jpg
+banner_img: /img/cover-quantum.jpg
 ---
 > 用途：量子自编码器(QAE)学习，包含克罗内克积、狄拉克符号、内积外积
 

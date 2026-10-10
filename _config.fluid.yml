@@ -156,9 +156,10 @@ index:
 post:
   banner_img: /img/banner.jpg
   banner_img_height: 70
-  banner_mask_alpha: 0.3
-  # 首页卡片的默认封面图（文章可用 front-matter 里的 index_img 单独指定）
-  default_index_img: /img/cover.jpg
+  # 文章头图上的标题是白字，配图偏亮时 0.3 会看不清，这里加深一点保证可读
+  banner_mask_alpha: 0.45
+  # 首页卡片的默认封面图（文章可用 front-matter 里的 index_img / banner_img 单独指定）
+  default_index_img: /img/banner.jpg
 
   meta:
     author:

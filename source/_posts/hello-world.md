@@ -8,7 +8,8 @@ tags:
   - 博客
   - 记录
 description: 博客开张。说说为什么要写博客，以及这里以后会放些什么。
-index_img: /img/banner.jpg
+index_img: /img/cover-hello.jpg
+banner_img: /img/cover-hello.jpg
 sticky: 100
 ---
 
