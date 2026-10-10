@@ -1,0 +1,62 @@
+/* ================================================================
+   自定义样式（在 _config.fluid.yml 的 custom_css 里启用）
+   路径：source/css/custom.css
+   ================================================================ */
+
+/* ---- 中文字体优化：优先使用系统自带的现代中文字体 ---- */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans SC",
+    "Noto Sans CJK SC", sans-serif;
+}
+
+/* ---- KaTeX 公式 ----
+   笔记里有不少宽矩阵，窄屏上会撑破版面，这里让行间公式可以横向滚动 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.3em 0;
+}
+
+.katex-display > .katex {
+  white-space: normal;
+}
+
+/* 行内公式不要因为换行被拆开 */
+.katex {
+  white-space: nowrap;
+}
+
+/* ---- 文章内图片：居中并留白 ---- */
+.markdown-body img {
+  display: block;
+  margin: 1.2rem auto;
+  border-radius: 6px;
+}
+
+/* ---- 引用块：品牌色左边框 ---- */
+.markdown-body blockquote {
+  border-left: 4px solid #37c6c0;
+  background-color: rgba(55, 198, 192, 0.06);
+  padding: 8px 16px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ---- 表格：铺满宽度、表头加重 ---- */
+.markdown-body table {
+  width: 100%;
+}
+
+.markdown-body table th {
+  background-color: rgba(55, 198, 192, 0.08);
+}
+
+/* ---- 长公式/长代码在窄屏下允许横向滚动，避免撑破卡片 ---- */
+.markdown-body pre {
+  overflow-x: auto;
+}
+
+/* ---- 首页卡片标题 hover 用品牌色 ---- */
+.index-card .index-header .title:hover {
+  color: #37c6c0;
+}
