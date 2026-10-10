@@ -1,72 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>你好，世界</title>
-    <url>/steven2004.github.io/2026/02/25/hello-world/</url>
-    <content><![CDATA[<p>折腾了一下午，这个博客终于上线了。地址是 <a href="https://cplasf2049.github.io/steven2004.github.io/">https://CPLASF2049.github.io/steven2004.github.io/</a>。</p>
-<h2 id="为什么要写博客"><a href="#为什么要写博客" class="headerlink" title="为什么要写博客"></a>为什么要写博客</h2><p>其实想写博客很久了，一直没动手，理由无非是那几个：没时间、不知道写什么、觉得写了也没人看。</p>
-<p>后来想明白了：<strong>写博客首先是写给自己的</strong>。</p>
-<ul>
-<li>学过的东西不写下来，三个月后就忘得只剩「我好像见过这个」</li>
-<li>能把一件事讲清楚，才算真正理解它</li>
-<li>踩过的坑记一笔，下次能省半小时</li>
-<li>攒下来的东西，本身就是一种复利</li>
-</ul>
-<p>至于有没有人看，随缘就好。</p>
-<h2 id="为什么用-Hexo-GitHub-Pages"><a href="#为什么用-Hexo-GitHub-Pages" class="headerlink" title="为什么用 Hexo + GitHub Pages"></a>为什么用 Hexo + GitHub Pages</h2><p>选这套方案的原因很简单：</p>
-<table>
-<thead>
-<tr>
-<th>方案</th>
-<th>服务器成本</th>
-<th>维护成本</th>
-<th>数据归属</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>WordPress 自建</td>
-<td>有</td>
-<td>高（要管服务器、数据库、安全）</td>
-<td>自己</td>
-</tr>
-<tr>
-<td>掘金 &#x2F; 知乎等平台</td>
-<td>无</td>
-<td>无</td>
-<td>平台</td>
-</tr>
-<tr>
-<td><strong>Hexo + GitHub Pages</strong></td>
-<td><strong>无</strong></td>
-<td><strong>低</strong></td>
-<td><strong>自己</strong></td>
-</tr>
-</tbody></table>
-<p>我不需要后台、不需要数据库，文章就是一堆 Markdown 文件，放在 Git 仓库里，永远不会丢。而且：</p>
-<ul>
-<li>完全免费，GitHub 自带 CDN</li>
-<li>想换主题就换主题，想加功能就装插件</li>
-<li>本地 <code>hexo server</code> 就能预览，写完 <code>hexo deploy</code> 一键发布</li>
-</ul>
-<h2 id="以后会写什么"><a href="#以后会写什么" class="headerlink" title="以后会写什么"></a>以后会写什么</h2><p>大概会围绕这几个方向：</p>
-<div class="note info"><p><strong>更新方向</strong><br>编程笔记、工具效率、学习总结，偶尔写点生活随笔。</p>
-</div>
-
-<p>第一件事是把搭建过程整理出来，方便以后重建，也方便想搭博客的朋友：</p>
-<p>→ <a href="/steven2004.github.io/2026/02/25/build-github-pages-blog-with-hexo/" title="从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南">从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南</a></p>
-<h2 id="关于评论"><a href="#关于评论" class="headerlink" title="关于评论"></a>关于评论</h2><p>本站的评论基于 GitHub Issue（Utterances）。你用 GitHub 账号登录就能留言，评论会以 Issue 的形式存在博客仓库里，不会丢，也没有广告。</p>
-<hr>
-<p>就这些。希望这个博客能活得久一点 —— 至少比我的上一次尝试久。🙂</p>
-]]></content>
-      <categories>
-        <category>随笔</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>博客</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南</title>
     <url>/steven2004.github.io/2026/02/25/build-github-pages-blog-with-hexo/</url>
     <content><![CDATA[<p>没有服务器、不买域名、不备案，也能有一个完全属于自己、可以长期使用的技术博客。这篇文章记录我把本站从零搭起来的完整过程，顺便把旧教程里已经过时的部分修正掉。</p>
@@ -276,8 +210,8 @@
         <category>技术教程</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
         <tag>GitHub Pages</tag>
+        <tag>Hexo</tag>
         <tag>NexT</tag>
         <tag>博客搭建</tag>
       </tags>
@@ -484,6 +418,72 @@ A = \begin{pmatrix} a &amp; b \\ c &amp; d \end{pmatrix}
         <tag>NexT</tag>
         <tag>Markdown</tag>
         <tag>写作</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>你好，世界</title>
+    <url>/steven2004.github.io/2026/02/25/hello-world/</url>
+    <content><![CDATA[<p>折腾了一下午，这个博客终于上线了。地址是 <a href="https://cplasf2049.github.io/steven2004.github.io/">https://CPLASF2049.github.io/steven2004.github.io/</a>。</p>
+<h2 id="为什么要写博客"><a href="#为什么要写博客" class="headerlink" title="为什么要写博客"></a>为什么要写博客</h2><p>其实想写博客很久了，一直没动手，理由无非是那几个：没时间、不知道写什么、觉得写了也没人看。</p>
+<p>后来想明白了：<strong>写博客首先是写给自己的</strong>。</p>
+<ul>
+<li>学过的东西不写下来，三个月后就忘得只剩「我好像见过这个」</li>
+<li>能把一件事讲清楚，才算真正理解它</li>
+<li>踩过的坑记一笔，下次能省半小时</li>
+<li>攒下来的东西，本身就是一种复利</li>
+</ul>
+<p>至于有没有人看，随缘就好。</p>
+<h2 id="为什么用-Hexo-GitHub-Pages"><a href="#为什么用-Hexo-GitHub-Pages" class="headerlink" title="为什么用 Hexo + GitHub Pages"></a>为什么用 Hexo + GitHub Pages</h2><p>选这套方案的原因很简单：</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>服务器成本</th>
+<th>维护成本</th>
+<th>数据归属</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WordPress 自建</td>
+<td>有</td>
+<td>高（要管服务器、数据库、安全）</td>
+<td>自己</td>
+</tr>
+<tr>
+<td>掘金 &#x2F; 知乎等平台</td>
+<td>无</td>
+<td>无</td>
+<td>平台</td>
+</tr>
+<tr>
+<td><strong>Hexo + GitHub Pages</strong></td>
+<td><strong>无</strong></td>
+<td><strong>低</strong></td>
+<td><strong>自己</strong></td>
+</tr>
+</tbody></table>
+<p>我不需要后台、不需要数据库，文章就是一堆 Markdown 文件，放在 Git 仓库里，永远不会丢。而且：</p>
+<ul>
+<li>完全免费，GitHub 自带 CDN</li>
+<li>想换主题就换主题，想加功能就装插件</li>
+<li>本地 <code>hexo server</code> 就能预览，写完 <code>hexo deploy</code> 一键发布</li>
+</ul>
+<h2 id="以后会写什么"><a href="#以后会写什么" class="headerlink" title="以后会写什么"></a>以后会写什么</h2><p>大概会围绕这几个方向：</p>
+<div class="note info"><p><strong>更新方向</strong><br>编程笔记、工具效率、学习总结，偶尔写点生活随笔。</p>
+</div>
+
+<p>第一件事是把搭建过程整理出来，方便以后重建，也方便想搭博客的朋友：</p>
+<p>→ <a href="/steven2004.github.io/2026/02/25/build-github-pages-blog-with-hexo/" title="从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南">从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南</a></p>
+<h2 id="关于评论"><a href="#关于评论" class="headerlink" title="关于评论"></a>关于评论</h2><p>本站的评论基于 GitHub Issue（Utterances）。你用 GitHub 账号登录就能留言，评论会以 Issue 的形式存在博客仓库里，不会丢，也没有广告。</p>
+<hr>
+<p>就这些。希望这个博客能活得久一点 —— 至少比我的上一次尝试久。🙂</p>
+]]></content>
+      <categories>
+        <category>随笔</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
 </search>
