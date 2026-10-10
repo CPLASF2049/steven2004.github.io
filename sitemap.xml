@@ -61,20 +61,6 @@
   </url>
   
   <url>
-    <loc>https://cplasf2049.github.io/steven2004.github.io/tags/%E8%AF%97/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://cplasf2049.github.io/steven2004.github.io/tags/%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2026-10-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://cplasf2049.github.io/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2026-10-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -102,6 +88,20 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://cplasf2049.github.io/steven2004.github.io/tags/%E8%AF%97/</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://cplasf2049.github.io/steven2004.github.io/tags/%E7%94%9F%E6%B4%BB/</loc>
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -112,14 +112,14 @@
   </url>
   
   <url>
-    <loc>https://cplasf2049.github.io/steven2004.github.io/categories/%E7%94%9F%E6%B4%BB/</loc>
+    <loc>https://cplasf2049.github.io/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2026-10-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://cplasf2049.github.io/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <loc>https://cplasf2049.github.io/steven2004.github.io/categories/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2026-10-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
