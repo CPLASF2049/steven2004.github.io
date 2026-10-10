@@ -1,0 +1,17 @@
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+_multiconfig.yml
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# 自定义样式或草稿的备份
+*.bak

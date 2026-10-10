@@ -1,0 +1,400 @@
+# ===============================================================
+# NexT 主题配置（Alternate Theme Config）
+#
+# 这个文件放在站点根目录，用来**覆盖**主题自带的默认配置：
+#   node_modules/hexo-theme-next/_config.yml
+# 只写需要改动的项即可，没写的项沿用主题默认值。
+#
+# 好处：升级主题（npm update hexo-theme-next）不会覆盖你的配置。
+# 完整可用选项见：https://theme-next.js.org/docs/theme-settings/
+# ===============================================================
+
+# ---------------------------------------------------------------
+# 主题核心
+# ---------------------------------------------------------------
+cache:
+  enable: true
+
+minify: false
+
+# 自定义文件：在 source/_data 下建文件后在这里启用
+custom_file_path:
+  #head: source/_data/head.njk
+  #header: source/_data/header.njk
+  #sidebar: source/_data/sidebar.njk
+  #postMeta: source/_data/post-meta.njk
+  #postBodyStart: source/_data/post-body-start.njk
+  #postBodyEnd: source/_data/post-body-end.njk
+  #footer: source/_data/footer.njk
+  #bodyEnd: source/_data/body-end.njk
+  #variable: source/_data/variables.styl
+  #mixin: source/_data/mixins.styl
+  style: source/_data/styles.styl
+
+
+# ---------------------------------------------------------------
+# 外观
+# ---------------------------------------------------------------
+# 可选：Muse（经典单栏）| Mist（紧凑单栏）| Pisces（双栏）| Gemini（双栏现代）
+scheme: Pisces
+
+# 跟随系统自动切换深色模式
+darkmode: true
+
+# 手动明暗切换按钮（和 darkmode 二选一即可；这里保持关闭）
+lightdark:
+  enable: false
+  check_supports: true
+
+
+# ---------------------------------------------------------------
+# 站点信息
+# ---------------------------------------------------------------
+favicon:
+  small: /images/favicon-16x16-next.png
+  medium: /images/favicon-32x32-next.png
+  apple_touch_icon: /images/apple-touch-icon-next.png
+  safari_pinned_tab: /images/logo.svg
+
+# 站点顶部 logo（Mist 主题不支持）
+custom_logo:
+
+creative_commons:
+  license: by-nc-sa
+  size: small
+  sidebar: false
+  post: true
+  language: deed.zh
+
+open_graph:
+  enable: true
+  options:
+    #twitter_card: summary_large_image
+
+
+# ---------------------------------------------------------------
+# 菜单
+# 格式：`名称: 链接 || 图标`
+# 名称用英文 key 时会自动套用 NexT 的中文翻译
+# ---------------------------------------------------------------
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  #sitemap: /sitemap.xml || fa fa-sitemap
+
+menu_settings:
+  icons: true
+  badges: false
+
+
+# ---------------------------------------------------------------
+# 侧边栏
+# ---------------------------------------------------------------
+sidebar:
+  # 侧边栏位置：left | right
+  position: left
+  width_expanded: 320
+  width_dual_column: 240
+  # post：文章页自动展开 | always：所有页面展开 | hide：点击才展开 | remove：完全移除
+  display: post
+  padding: 18
+  offset: 12
+
+# 头像：把图片放到 source/images/avatar.png
+avatar:
+  url: /images/avatar.png
+  rounded: true
+  rotated: true
+
+# 侧边栏显示「文章 / 分类 / 标签」数量
+site_state: true
+
+# 社交链接
+social:
+  GitHub: https://github.com/steven2004 || fab fa-github
+  E-Mail: mailto:318264563@qq.com || fa fa-envelope
+  RSS: /atom.xml || fa fa-rss
+
+social_icons:
+  enable: true
+  icons_only: false
+  transition: false
+
+# 友情链接
+links_settings:
+  icon: fa fa-globe
+  layout: block
+
+links:
+  #Hexo: https://hexo.io
+
+# 文章目录
+toc:
+  enable: true
+  number: true
+  wrap: false
+  expand_all: false
+  max_depth: 3
+
+language_switcher: false
+
+# 页脚
+footer:
+  since: 2026
+  icon:
+    name: fa fa-heart
+    animated: true
+    color: "#ff0000"
+  copyright:
+  powered: true
+
+
+# ---------------------------------------------------------------
+# 文章
+# ---------------------------------------------------------------
+# 用 front-matter 里的 description 作为首页摘要
+excerpt_description: true
+read_more_btn: true
+
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at:
+    enable: true
+    another_day: true
+  categories: true
+
+# 字数统计与阅读时长（依赖 hexo-word-counter）
+symbols_count_time:
+  separated_meta: true
+  item_text_total: false
+
+tag_icon: true
+
+reward_settings:
+  enable: false
+  animation: false
+
+reward:
+  #wechatpay: /images/wechatpay.png
+  #alipay: /images/alipay.png
+
+follow_me:
+  RSS: /atom.xml || fa fa-rss
+
+post_navigation: left
+
+
+# ---------------------------------------------------------------
+# 自定义页面
+# ---------------------------------------------------------------
+tagcloud:
+  min: 12
+  max: 30
+  amount: 200
+  orderby: name
+  order: 1
+
+
+# ---------------------------------------------------------------
+# 杂项
+# ---------------------------------------------------------------
+preconnect: false
+
+text_align:
+  desktop: justify
+  mobile: justify
+
+mobile_layout_economy: false
+
+theme_color:
+  light: "#222"
+  dark: "#222"
+
+body_scrollbar:
+  overlay: false
+
+codeblock:
+  theme:
+    light: default
+    dark: stackoverflow-dark
+  prism:
+    light: prism
+    dark: prism-dark
+  # 代码块右上角「复制」按钮
+  copy_button:
+    enable: true
+    style: flat
+  # 代码过长时折叠
+  fold:
+    enable: false
+    height: 500
+  language: false
+
+# 返回顶部 + 阅读百分比
+back2top:
+  enable: true
+  sidebar: false
+  scrollpercent: true
+
+# 顶部阅读进度条
+reading_progress:
+  enable: true
+  start_at: left
+  position: top
+  reversed: false
+  color: "#37c6c0"
+  height: 3px
+
+# 阅读位置书签
+bookmark:
+  enable: true
+  color: "#222"
+  save: auto
+
+# 右上角 GitHub 彩带
+github_banner:
+  enable: true
+  permalink: https://github.com/steven2004
+
+
+# ---------------------------------------------------------------
+# 数学公式
+#
+# 本站采用**服务端渲染**：站点 _config.yml 里装了 hexo-filter-mathjax，
+# 它会在 hexo generate 阶段就把 LaTeX 渲染成 SVG，页面不依赖任何前端脚本，
+# 也不用等 MathJax 从 CDN 下载，国内访问更快、无闪烁。
+#
+# 因此这里必须把主题的前端渲染关掉（官方要求 mathjax 和 katex 都为 false），
+# 否则会加载一份用不上的 CDN 脚本，甚至和已渲染的公式冲突。
+#
+# 用法：在需要公式的文章 front-matter 中写 `mathjax: true`
+# 文档：https://github.com/next-theme/hexo-filter-mathjax
+# ---------------------------------------------------------------
+math:
+  every_page: false
+  mathjax:
+    enable: false
+    tags: none
+    display_overflow: scroll
+  katex:
+    enable: false
+    copy_tex: false
+
+
+# ---------------------------------------------------------------
+# 外部库
+# ---------------------------------------------------------------
+# 无刷新页面切换
+pjax: true
+
+# 图片点击放大
+fancybox: true
+mediumzoom: false
+
+# 中英文之间自动加空格
+pangu: true
+
+# 链接预取，加快站内跳转
+quicklink:
+  enable: true
+  home: false
+  archive: false
+  delay: true
+  timeout: 3000
+  priority: true
+
+
+# ---------------------------------------------------------------
+# 动画
+# ---------------------------------------------------------------
+motion:
+  enable: true
+  async: false
+  duration: 200
+  transition:
+    menu_item: fadeInDown
+    post_block: fadeIn
+    post_header: fadeInDown
+    post_body: fadeInDown
+    coll_header: fadeInLeft
+    sidebar: fadeInUp
+
+pace:
+  enable: false
+  color: blue
+  theme: minimal
+
+canvas_ribbon:
+  enable: false
+  size: 300
+  alpha: 0.6
+  zIndex: -1
+
+
+# ---------------------------------------------------------------
+# 评论：Utterances（基于 GitHub Issue，免费、无广告）
+#
+# 启用前必须做两件事：
+#   1. 给仓库安装 Utterances App：https://github.com/apps/utterances
+#      （选 Only select repositories → 勾选 steven2004.github.io）
+#   2. 仓库 Settings → General → Features 勾选 Issues
+# 注意：文章所在仓库必须是**公开**仓库。
+# ---------------------------------------------------------------
+comments:
+  style: tabs
+  active: utterances
+  storage: true
+  lazyload: false
+
+utterances:
+  enable: true
+  repo: steven2004/steven2004.github.io
+  # pathname | url | title | og:title
+  issue_term: pathname
+  # github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light
+  theme: preferred-color-scheme
+
+
+# ---------------------------------------------------------------
+# 搜索：本地搜索（hexo-generator-searchdb）
+# ---------------------------------------------------------------
+algolia_search:
+  enable: false
+
+local_search:
+  enable: true
+  top_n_per_article: 1
+  unescape: false
+  preload: true
+
+
+# ---------------------------------------------------------------
+# 访客统计（可选：不蒜子，无需注册）
+# ---------------------------------------------------------------
+busuanzi_count:
+  enable: false
+  total_visitors: true
+  total_visitors_icon: fa fa-user
+  total_views: true
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: fa fa-eye
+
+
+# ---------------------------------------------------------------
+# CDN
+# internal: local 表示 NexT 自带资源用站内文件（推荐）
+# plugins: 第三方库的 CDN，国内访问 cdnjs 通常比 jsdelivr 稳
+# ---------------------------------------------------------------
+vendors:
+  internal: local
+  plugins: cdnjs
+  custom_cdn_url:
+
+css: css
+js: js
+images: images
