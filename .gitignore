@@ -22,3 +22,6 @@ _multiconfig.yml
 /hello.png
 /女朋友.jpeg
 /量子.jpeg
+
+# 写作原稿：内容已经整理成 source/_posts/ 里的文章，原稿只留在本地
+/quantum_math_notes.md
