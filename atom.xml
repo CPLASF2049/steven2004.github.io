@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <author>
-    <name>Steven</name>
+    <name>李思源</name>
   </author>
   <generator uri="https://hexo.io/">Hexo</generator>
   <id>https://cplasf2049.github.io/steven2004.github.io/</id>
   <link href="https://cplasf2049.github.io/steven2004.github.io/" rel="alternate"/>
   <link href="https://cplasf2049.github.io/steven2004.github.io/atom.xml" rel="self"/>
-  <rights>All rights reserved 2026, Steven</rights>
-  <subtitle>记录技术、工具与生活</subtitle>
+  <rights>All rights reserved 2026, 李思源</rights>
+  <subtitle>记录计算机学习日常</subtitle>
   <title>Steven's Blog</title>
   <updated>2026-10-10T13:38:21.000Z</updated>
   <entry>
     <author>
-      <name>Steven</name>
+      <name>李思源</name>
     </author>
     <category term="量子计算" scheme="https://cplasf2049.github.io/steven2004.github.io/categories/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/"/>
     <category term="量子机器学习" scheme="https://cplasf2049.github.io/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
@@ -32,7 +32,7 @@
   </entry>
   <entry>
     <author>
-      <name>Steven</name>
+      <name>李思源</name>
     </author>
     <category term="随笔" scheme="https://cplasf2049.github.io/steven2004.github.io/categories/%E9%9A%8F%E7%AC%94/"/>
     <category term="博客" scheme="https://cplasf2049.github.io/steven2004.github.io/tags/%E5%8D%9A%E5%AE%A2/"/>
