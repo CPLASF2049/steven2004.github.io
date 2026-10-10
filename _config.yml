@@ -121,6 +121,9 @@ deploy:
   # 注意：这里用的是 Luxon 的格式记号（yyyy-MM-dd），不是 Moment 的 YYYY-MM-DD。
   # 部署插件用 Nunjucks 渲染这行，写错会得到一个奇怪的提交信息。
   message: 'Site updated: {{ now("yyyy-MM-dd HH:mm:ss") }}'
+  # 关键：部署插件默认会跳过隐藏文件，这样 source/.nojekyll 就推不上去，
+  # 于是 GitHub Pages 仍会用 Jekyll 处理站点。设为 false 才会带上 .nojekyll。
+  ignore_hidden: false
   # 如果推送较慢或需要代理，可以改用 SSH 地址：
   # repo: git@github.com:CPLASF2049/steven2004.github.io.git
 
