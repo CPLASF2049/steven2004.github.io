@@ -17,7 +17,7 @@ comments: true
 
 ## 为什么是 GitHub Pages + Hexo
 
-**GitHub Pages** 是 GitHub 提供的免费静态托管服务。每个账号可以建一个名为 `用户名.github.io` 的仓库，访问地址就是 `https://用户名.github.io`。免费、自带 CDN、不需要任何运维。
+**GitHub Pages** 是 GitHub 提供的免费静态托管服务。每个账号都能免费拿到一个根域名 `https://你的用户名.github.io`，再挂任意多个项目站点。免费、自带 CDN、不需要任何运维。
 
 **Hexo** 是一个 Node.js 写的静态博客框架：
 
@@ -42,22 +42,37 @@ git --version
 ### 配置 Git 身份
 
 ```bash
-git config --global user.name "steven2004"
+git config --global user.name "CPLASF2049"
 git config --global user.email "你的邮箱@example.com"
 ```
 
-### 创建仓库
+### 创建仓库：先搞清楚两种站点
 
-在 GitHub 上新建一个**公开**仓库，名字必须是 `用户名.github.io`。以本站为例：
+这一步最容易踩坑。GitHub Pages 有**两种**站点，网址格式完全不同：
+
+| 类型 | 仓库名要求 | 网址 |
+| --- | --- | --- |
+| 用户主页站点 | 必须叫 `你的用户名.github.io` | `https://你的用户名.github.io` |
+| 项目站点 | 任意仓库名 | `https://你的用户名.github.io/仓库名` |
+
+关键点：**决定是不是主页站点的，是「仓库名 == 用户名.github.io」，而不是「仓库名里有没有 .github.io」**。
+
+以本站为例：账号是 `CPLASF2049`，仓库叫 `steven2004.github.io`。仓库名不等于 `CPLASF2049.github.io`，所以它是**项目站点**：
 
 ```text
-仓库名：steven2004.github.io
-访问地址：https://steven2004.github.io
+账号：CPLASF2049
+仓库：steven2004.github.io
+访问地址：https://CPLASF2049.github.io/steven2004.github.io   ← 多一层仓库名
 ```
 
 {% note warning %}
-仓库名必须严格是 `用户名.github.io` 的格式，GitHub 才会把它识别为「用户主页站点」并给出根域名。
+**想清楚你要哪种。**
+
+- 想要 `https://CPLASF2049.github.io` 这种干净根域名 → 仓库名必须叫 **`CPLASF2049.github.io`**，然后 `url: https://CPLASF2049.github.io`、`root: /`。
+- 想要 `https://steven2004.github.io` → 那需要有一个**用户名就叫 steven2004** 的 GitHub 账号，并在它下面建同名仓库。用户名是什么，根域名就是什么，改不了。
 {% endnote %}
+
+新建仓库时选 **Public**（私有仓库的 Pages 有限制，而且 Utterances 评论必须用公开仓库）。
 
 ## 二、初始化 Hexo 项目
 
@@ -144,7 +159,9 @@ language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # 站点地址（必须写对，否则 RSS、站点地图、搜索里的链接全是错的）
-url: https://steven2004.github.io
+url: https://CPLASF2049.github.io/steven2004.github.io
+# 子路径部署的关键：项目站点的根路径就是 /仓库名/，前后斜杠都不能少
+root: /steven2004.github.io/
 permalink: :year/:month/:day/:title/
 
 # 主题
@@ -153,9 +170,18 @@ theme: next
 # 部署
 deploy:
   type: git
-  repo: https://github.com/steven2004/steven2004.github.io.git
+  repo: https://github.com/CPLASF2049/steven2004.github.io.git
   branch: gh-pages
 ```
+
+{% note danger %}
+**`root` 是项目站点最容易漏的一行。**
+
+`url` 决定「文章自己的永久链接长什么样」，`root` 决定「页面里引用 CSS、JS、图片、菜单时前面加什么」。
+项目站点只改 `url` 不改 `root`（默认是 `/`），生成出来的页面会去 `https://CPLASF2049.github.io/css/main.css` 找样式表 —— 而文件其实在 `/steven2004.github.io/css/main.css`，结果就是**页面裸奔、完全没样式**。
+
+用户主页站点（仓库名 == `用户名.github.io`）保持 `root: /` 即可。
+{% endnote %}
 
 {% note info %}
 `updated_option` 建议设成 `'date'`。默认的 `'mtime'` 会让「更新于」跟着文件修改时间走 —— 每次重新 clone 仓库，所有文章的修改时间都变成今天，页面上看起来就像全站刚更新过。
@@ -272,7 +298,7 @@ comments:
 
 utterances:
   enable: true
-  repo: steven2004/steven2004.github.io
+  repo: CPLASF2049/steven2004.github.io
   issue_term: pathname
   theme: preferred-color-scheme
 ```
@@ -288,16 +314,32 @@ utterances:
 
 ### 数学公式
 
-NexT v8 支持 MathJax 和 KaTeX，本站在站点配置里装了 `hexo-filter-mathjax` 走 MathJax：
+NexT v8 自带 MathJax 和 KaTeX 两种前端渲染引擎，但本站用的是**服务端渲染**：
+装 `hexo-filter-mathjax`，在 `hexo generate` 阶段就把 LaTeX 渲染成 SVG，页面不用等 CDN 下载脚本，国内访问更快、也没有闪烁。
 
 ```yaml
+# 站点 _config.yml：服务端渲染的数学公式
+mathjax:
+  tags: none
+  single_dollars: true
+  every_page: false
+  packages:            # ams 提供 pmatrix / cases / align 等环境，必须加
+    - ams
+
+# 主题 _config.next.yml：把前端渲染关掉，否则会重复加载用不上的脚本
 math:
-  every_page: false     # 只在需要公式的文章加载脚本，性能更好
+  every_page: false
   mathjax:
-    enable: true
+    enable: false
+  katex:
+    enable: false
 ```
 
 然后在需要公式的文章 front-matter 里加一行 `mathjax: true` 即可。
+
+{% note warning %}
+这套组合有一个反直觉的地方：插件在 **markdown 渲染之后**才运行，而 markdown 会吃掉一层反斜杠转义。所以「反斜杠 + 半角标点」要写两个反斜杠 —— 矩阵换行写 `\\\\`，细空格写 `\\,`。详细对照表见 {% post_link next-theme-writing-guide %}。
+{% endnote %}
 
 ## 七、创建标签页、分类页、关于页
 
@@ -344,7 +386,7 @@ comments: false
 git init -b main
 git add .
 git commit -m "chore: init blog"
-git remote add origin https://github.com/steven2004/steven2004.github.io.git
+git remote add origin https://github.com/CPLASF2049/steven2004.github.io.git
 git push -u origin main
 ```
 
@@ -360,16 +402,27 @@ hexo deploy
 
 ### 最后一步：开启 Pages
 
-到仓库 **Settings → Pages**：
+到仓库 **Settings → Pages**（地址可以直接敲）：
+
+```text
+https://github.com/CPLASF2049/steven2004.github.io/settings/pages
+```
 
 - **Source** 选 `Deploy from a branch`
 - **Branch** 选 `gh-pages`，目录选 `/ (root)`
 - 保存，等一两分钟
 
-然后访问 <https://steven2004.github.io> —— 上线了。
+然后访问 <https://CPLASF2049.github.io/steven2004.github.io> —— 上线了。
+
+{% note info %}
+GitHub 在 Pages 设置页面上给出的地址，会带上仓库名这一层子路径，这正是项目站点的特征。
+{% endnote %}
 
 {% note warning %}
-如果 CSS/JS 全部 404、页面裸奔，多半是 Jekyll 在捣乱。GitHub Pages 默认会用 Jekyll 处理分支内容，而 Jekyll 会忽略下划线开头的目录。在 `source/.nojekyll` 放一个空文件（Hexo 会把它复制到 `public/` 根目录）就能关掉 Jekyll。
+**CSS/JS 全部 404、页面裸奔**，两个常见原因：
+
+1. `_config.yml` 里漏了 `root: /steven2004.github.io/`（项目站点必踩）
+2. Jekyll 在捣乱 —— GitHub Pages 默认会用 Jekyll 处理分支内容，而 Jekyll 会忽略下划线开头的目录。在 `source/.nojekyll` 放一个空文件（Hexo 会把它复制到 `public/` 根目录）就能关掉 Jekyll。
 {% endnote %}
 
 ## 常用命令

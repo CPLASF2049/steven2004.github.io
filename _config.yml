@@ -13,8 +13,12 @@ language: zh-CN
 timezone: 'Asia/Shanghai'
 
 # URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://steven2004.github.io
+## 这是「项目站点」：账号 CPLASF2049 下名为 steven2004.github.io 的仓库，
+## 不是账号主页站点，所以网址带一层仓库名的子路径。
+## 站点地址 = url，站内所有链接前面会自动加上 root。
+url: https://CPLASF2049.github.io/steven2004.github.io
+## 子路径部署的关键配置：必须以 / 开头和结尾，否则 CSS/JS/菜单链接全部 404
+root: /steven2004.github.io/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -112,11 +116,11 @@ theme: next
 ## 再由 GitHub Pages 从 gh-pages 分支发布。（详见 README.md）
 deploy:
   type: git
-  repo: https://github.com/steven2004/steven2004.github.io.git
+  repo: https://github.com/CPLASF2049/steven2004.github.io.git
   branch: gh-pages
   message: 'Site updated: {{ now("YYYY-MM-DD HH:mm:ss") }}'
   # 如果推送较慢或需要代理，可以改用 SSH 地址：
-  # repo: git@github.com:steven2004/steven2004.github.io.git
+  # repo: git@github.com:CPLASF2049/steven2004.github.io.git
 
 # RSS 订阅（hexo-generator-feed）
 feed:

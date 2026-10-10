@@ -113,8 +113,9 @@ avatar:
 site_state: true
 
 # 社交链接
+# 站内链接（比如 /atom.xml）主题会自动加上 root 前缀，不用手写完整网址
 social:
-  GitHub: https://github.com/steven2004 || fab fa-github
+  GitHub: https://github.com/CPLASF2049 || fab fa-github
   E-Mail: mailto:318264563@qq.com || fa fa-envelope
   RSS: /atom.xml || fa fa-rss
 
@@ -258,7 +259,7 @@ bookmark:
 # 右上角 GitHub 彩带
 github_banner:
   enable: true
-  permalink: https://github.com/steven2004
+  permalink: https://github.com/CPLASF2049
 
 
 # ---------------------------------------------------------------
@@ -352,7 +353,7 @@ comments:
 
 utterances:
   enable: true
-  repo: steven2004/steven2004.github.io
+  repo: CPLASF2049/steven2004.github.io
   # pathname | url | title | og:title
   issue_term: pathname
   # github-light | github-dark | preferred-color-scheme | github-dark-orange | icy-dark | dark-blue | photon-dark | boxy-light

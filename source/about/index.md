@@ -16,7 +16,7 @@ comments: false
 - 写文章只需要 Markdown
 - 每次 `hexo deploy` 自动发布
 
-如果你想搭一个一样的博客，可以看这篇：[从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南](/2026/02/25/build-github-pages-blog-with-hexo/)。
+如果你想搭一个一样的博客，可以看这篇：{% post_link build-github-pages-blog-with-hexo %}。
 
 ## 我会写些什么
 
@@ -29,7 +29,8 @@ comments: false
 
 ## 联系我
 
-- GitHub：[@steven2004](https://github.com/steven2004)
+- GitHub：[@CPLASF2049](https://github.com/CPLASF2049)
+- 博客源码：<https://github.com/CPLASF2049/steven2004.github.io>
 - 邮箱：<318264563@qq.com>
 - 也可以在任意文章下方用 GitHub 账号留言评论
 

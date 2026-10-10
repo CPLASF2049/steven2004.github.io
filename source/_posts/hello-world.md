@@ -11,7 +11,7 @@ description: 博客正式开张了。第一篇文章说说为什么要写博客�
 comments: true
 ---
 
-折腾了一下午，这个博客终于上线了。地址是 <https://steven2004.github.io>。
+折腾了一下午，这个博客终于上线了。地址是 <https://CPLASF2049.github.io/steven2004.github.io/>。
 
 ## 为什么要写博客
 
@@ -53,7 +53,7 @@ comments: true
 
 第一件事是把搭建过程整理出来，方便以后重建，也方便想搭博客的朋友：
 
-→ [从零搭建 GitHub Pages 博客：Hexo + NexT 完全指南](/2026/02/25/build-github-pages-blog-with-hexo/)
+→ {% post_link build-github-pages-blog-with-hexo %}
 
 ## 关于评论
 

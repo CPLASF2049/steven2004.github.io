@@ -30,8 +30,9 @@ try { [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false) } 
 
 $Root    = Split-Path -Parent $PSScriptRoot
 $HexoCmd = Join-Path $Root 'node_modules\.bin\hexo.cmd'
-$SiteUrl = 'https://steven2004.github.io'
-$RepoUrl = 'https://github.com/steven2004/steven2004.github.io.git'
+# 项目站点：账号 CPLASF2049 下的仓库 steven2004.github.io，网址带一层仓库名
+$SiteUrl = 'https://CPLASF2049.github.io/steven2004.github.io'
+$RepoUrl = 'https://github.com/CPLASF2049/steven2004.github.io.git'
 $SiteName = 'Steven 的博客'
 
 function Write-Head { param([string]$Text) Write-Host ''; Write-Host "== $Text ==" -ForegroundColor Cyan }
@@ -218,10 +219,10 @@ function Save-Source {
     } catch {
         Write-Host ''
         Write-Info '推送失败。常见原因：' 'Yellow'
-        Write-Info '1. 还没在 GitHub 上创建仓库 steven2004.github.io'
+        Write-Info '1. 还没在 GitHub 上创建仓库 steven2004.github.io（账号 CPLASF2049）'
         Write-Info '2. HTTPS 推送需要 Personal Access Token，而不是账号密码'
         Write-Info '   （GitHub 设置 -> Developer settings -> Personal access tokens）'
-        Write-Info '3. 或者改用 SSH：git remote set-url origin git@github.com:steven2004/steven2004.github.io.git'
+        Write-Info '3. 或者改用 SSH：git remote set-url origin git@github.com:CPLASF2049/steven2004.github.io.git'
         throw
     }
     Write-Host ''
@@ -259,7 +260,7 @@ function Invoke-Setup {
 
     Write-Host ''
     Write-Info '接下来请手动确认两件事：' 'Yellow'
-    Write-Info '1. GitHub 上已经创建了公开仓库 steven2004.github.io'
+    Write-Info '1. GitHub 上已经创建了公开仓库 CPLASF2049/steven2004.github.io'
     Write-Info '2. 本地已经配置好推送凭据（Personal Access Token 或 SSH 密钥）'
     Write-Host ''
     $answer = Read-Host '  现在推送源码到 main 吗？(y/N)'
