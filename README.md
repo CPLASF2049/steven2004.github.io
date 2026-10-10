@@ -268,6 +268,21 @@ $$
 
 ## 常见问题
 
+**推送失败：`Recv failure: Connection was reset` 或 `Failed to connect to github.com:443`**
+
+国内直连 GitHub 经常被重置，这不是仓库配置的问题。两个办法：
+
+1. 打开代理软件的**系统代理**开关（Clash Verge 之类），再执行 `blog publish`；
+2. 或者只给这一次命令挂上代理（Clash Verge 默认混合端口是 7897）：
+
+```powershell
+$env:HTTP_PROXY  = 'http://127.0.0.1:7897'
+$env:HTTPS_PROXY = 'http://127.0.0.1:7897'
+blog publish "post: 新文章"
+```
+
+判断是不是网络问题：`git ls-remote --heads origin` 能返回分支列表就说明通了。
+
 **加粗/斜体没生效，页面上直接显示了 `**` 星号**
 
 CommonMark 的「左右翼」规则碰上中文标点会失灵。加粗的收尾 `**` 如果**紧跟在全角标点后面、又被汉字接着**，它就不被认为是合法的收尾标记：
