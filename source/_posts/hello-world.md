@@ -1,14 +1,14 @@
 ---
 title: 你好，世界
 date: 2026-02-25 10:00:00
-updated: 2026-02-25 10:00:00
+updated: 2026-10-10 22:00:00
 categories:
   - 随笔
 tags:
-  - Hexo
   - 博客
-description: 博客正式开张了。第一篇文章说说为什么要写博客，以及这里以后会放些什么。
-comments: true
+  - 记录
+description: 博客开张。说说为什么要写博客，以及这里以后会放些什么。
+sticky: 100
 ---
 
 折腾了一下午，这个博客终于上线了。地址是 <https://CPLASF2049.github.io/steven2004.github.io/>。
@@ -26,9 +26,9 @@ comments: true
 
 至于有没有人看，随缘就好。
 
-## 为什么用 Hexo + GitHub Pages
+## 为什么是 Hexo + GitHub Pages
 
-选这套方案的原因很简单：
+选这套方案的原因很简单：不需要服务器、不需要数据库、不需要备案，文章就是一堆 Markdown 文件，放在 Git 仓库里，永远不会丢。
 
 | 方案 | 服务器成本 | 维护成本 | 数据归属 |
 | --- | --- | --- | --- |
@@ -36,28 +36,24 @@ comments: true
 | 掘金 / 知乎等平台 | 无 | 无 | 平台 |
 | **Hexo + GitHub Pages** | **无** | **低** | **自己** |
 
-我不需要后台、不需要数据库，文章就是一堆 Markdown 文件，放在 Git 仓库里，永远不会丢。而且：
+主题用的是 [Fluid](https://hexo.fluid-dev.com/)，清新、支持暗色模式和本地搜索，公式用 KaTeX 在构建时渲染好。
 
-- 完全免费，GitHub 自带 CDN
-- 想换主题就换主题，想加功能就装插件
-- 本地 `hexo server` 就能预览，写完 `hexo deploy` 一键发布
+## 这里会放什么
 
-## 以后会写什么
+主要是**量子计算与机器学习**方向的学习笔记，以及一些工程上的记录：
 
-大概会围绕这几个方向：
+- 量子计算基础：量子态、密度矩阵、量子门
+- 量子机器学习：变分线路、量子自编码器（QAE）
+- 数学基础：线性代数、张量运算、信息论
+- 编程与工具：环境配置、脚本、踩坑记录
 
-{% note info %}
-**更新方向**
-编程笔记、工具效率、学习总结，偶尔写点生活随笔。
-{% endnote %}
+第一篇正式笔记已经写好了：
 
-第一件事是把搭建过程整理出来，方便以后重建，也方便想搭博客的朋友：
-
-→ {% post_link build-github-pages-blog-with-hexo %}
+{% post_link quantum-math-notes %}
 
 ## 关于评论
 
-本站的评论基于 GitHub Issue（Utterances）。你用 GitHub 账号登录就能留言，评论会以 Issue 的形式存在博客仓库里，不会丢，也没有广告。
+本站评论基于 GitHub Issue（Utterances），用 GitHub 账号登录就能留言。评论会以 Issue 形式存在博客仓库里，不会丢，也没有广告。
 
 ---
 

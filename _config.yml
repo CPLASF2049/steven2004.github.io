@@ -6,8 +6,8 @@
 title: Steven's Blog
 subtitle: '记录技术、工具与生活'
 description: >-
-  Steven 的个人博客，记录编程、开发工具、学习笔记与日常思考。
-keywords: 博客, 技术, 编程, Hexo, NexT, 学习笔记
+  Steven 的个人博客，记录量子计算、机器学习、编程工具与学习笔记。
+keywords: 博客, 量子计算, 量子机器学习, 数学基础, Hexo, 学习笔记
 author: Steven
 language: zh-CN
 timezone: 'Asia/Shanghai'
@@ -106,9 +106,9 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-## 主题通过 npm 安装（node_modules/hexo-theme-next），
-## 主题配置写在站点根目录的 _config.next.yml 里。
-theme: next
+## 主题通过 npm 安装（node_modules/hexo-theme-fluid），
+## 主题配置写在站点根目录的 _config.fluid.yml 里。
+theme: fluid
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
@@ -138,9 +138,10 @@ feed:
   content_limit_delim: ' '
   order_by: -date
 
-# 本地搜索（hexo-generator-searchdb，配合 NexT 的 local_search）
+# 本地搜索（hexo-generator-searchdb，配合 Fluid 主题的 search）
+# 注意：这里的 path 必须和 _config.fluid.yml 里 search.path / generate_path 保持一致
 search:
-  path: search.xml
+  path: local-search.xml
   field: post
   content: true
   format: html
@@ -153,23 +154,32 @@ sitemap:
   tags: true
   categories: true
 
-# 数学公式服务端渲染（hexo-filter-mathjax，配合 NexT 的 math.mathjax: false）
-# 用法：在需要公式的文章 front-matter 中加 `mathjax: true`
-#
-# 注意：这个插件在 markdown 渲染**之后**才运行，而 markdown 会吃掉反斜杠转义，
-# 所以在 markdown 里写 LaTeX 时，遇到"反斜杠 + 半角标点"要写成两个反斜杠：
-#   markdown 里写 \\\\   -> LaTeX 收到 \\   （矩阵/多行公式的换行）
-#   markdown 里写 \\,    -> LaTeX 收到 \,   （细空格）
-#   markdown 里写 \\{    -> LaTeX 收到 \{   （字面大括号）
-# 详见 source/_posts/next-theme-writing-guide.md 的「数学公式」一节。
-mathjax:
-  tags: none # 可选 none | ams | all
-  single_dollars: true # 允许 $...$ 行内公式
-  cjk_width: 0.9
-  normal_width: 0.6
-  append_css: true
-  every_page: false
-  # 额外加载的 TeX 扩展包。ams 提供 pmatrix / align / cases 等环境，必须加。
-  packages:
-    - ams
-    - physics
+# Markdown 渲染器：hexo-renderer-markdown-it
+# 换掉默认的 marked 就是为了公式：markdown-it 的插件会在「反斜杠转义」之前
+# 把 $...$ / $$...$$ 整段抓走交给 KaTeX 渲染，所以 LaTeX 可以照标准写法写，
+# 矩阵换行照旧写 \\ 即可，不需要为了迁就 markdown 而写四个反斜杠。
+markdown:
+  preset: 'default'
+  render:
+    html: true
+    xhtmlOut: false
+    langPrefix: 'language-'
+    breaks: true
+    linkify: true
+    typographer: false
+    quotes: '“”‘’'
+  plugins:
+    - '@renbaoshuo/markdown-it-katex'
+  anchors:
+    level: 2
+    collisionSuffix: ''
+    permalink: false
+    permalinkClass: 'header-anchor'
+    permalinkSide: 'left'
+    permalinkSymbol: ''
+    case: 0
+    separator: '-'
+  images:
+    lazyload: false
+    prepend_root: false
+    post_asset: false

@@ -1,0 +1,255 @@
+# ===============================================================
+# Fluid 主题配置（Alternate Theme Config）
+#
+# 这个文件放在站点根目录，用来**覆盖**主题自带的默认配置：
+#   node_modules/hexo-theme-fluid/_config.yml
+# 只写需要改的项即可，没写的项沿用主题默认值（Hexo 会做深度合并）。
+#
+# 好处：升级主题（npm update hexo-theme-fluid）不会覆盖你的设置。
+# 完整可选项见：https://hexo.fluid-dev.com/docs/guide/
+# ===============================================================
+
+# ---------- 全局 ----------
+# 站点图标
+favicon: /img/favicon.png
+apple_touch_icon: /img/favicon.png
+
+# 代码块：保留复制按钮与语言标签
+code:
+  copy_btn: true
+  language:
+    enable: true
+    default: "TEXT"
+  highlight:
+    enable: true
+    line_number: false
+    lib: "highlightjs"
+
+# ---------- 首页副标题打字机效果 ----------
+fun_features:
+  typing:
+    enable: true
+    typeSpeed: 70
+    cursorChar: "_"
+    loop: false
+    scope: []
+
+  anchorjs:
+    enable: true
+    element: h2,h3,h4
+    placement: left
+    visible: hover
+    icon: ""
+
+  progressbar:
+    enable: true
+    height_px: 3
+    color: "#29d"
+
+# ---------- 暗色模式 ----------
+# 菜单里会出现切换按钮，同时遵循系统的 prefers-color-scheme
+dark_mode:
+  enable: true
+  default: auto
+
+# ---------- 字体 ----------
+font:
+  font_size: 16px
+  font_family:
+  letter_spacing: 0.02em
+  code_font_size: 85%
+
+# 自定义样式（相对 source 目录）
+custom_css:
+  - /css/custom.css
+
+# ---------- 页头 ----------
+navbar:
+  blog_title: "Steven's Blog"
+  ground_glass:
+    enable: false
+  menu:
+    - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
+    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
+
+# 搜索：用 hexo-generator-searchdb 生成的索引
+# 这里的 path 要和站点 _config.yml 里的 search.path 一致
+search:
+  enable: true
+  path: /local-search.xml
+  generate_path: /local-search.xml
+  field: post
+  content: true
+
+# 首屏头图
+banner:
+  random_img: false
+  parallax: true
+  width_height_ratio: 1.0
+
+scroll_down_arrow:
+  enable: true
+  banner_height_limit: 80
+  scroll_after_turning_page: true
+
+scroll_top_arrow:
+  enable: true
+
+open_graph:
+  enable: true
+  twitter_card: summary_large_image
+
+# ---------- 页脚 ----------
+footer:
+  content: '
+    <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a>
+    <i class="iconfont icon-love"></i>
+    <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>
+    <br>© 2026 Steven
+  '
+  statistics:
+    enable: false
+    source: "busuanzi"
+
+# ---------- 首页 ----------
+index:
+  banner_img: /img/banner.jpg
+  banner_img_height: 100
+  banner_mask_alpha: 0.3
+  slogan:
+    enable: true
+    text:
+      - "记录技术、工具与生活"
+      - "量子计算 · 量子机器学习 · 数学基础"
+      - "把学过的写下来，才算真的学会"
+    api:
+      enable: false
+  auto_excerpt:
+    enable: true
+  post_url_target: _self
+  post_meta:
+    date: true
+    category: true
+    tag: true
+  post_sticky:
+    enable: true
+    icon: "iconfont icon-top"
+
+# ---------- 文章页 ----------
+post:
+  banner_img: /img/banner.jpg
+  banner_img_height: 70
+  banner_mask_alpha: 0.3
+  # 首页卡片的默认封面图（文章可用 front-matter 里的 index_img 单独指定）
+  default_index_img: /img/cover.jpg
+
+  meta:
+    author:
+      enable: false
+    date:
+      enable: true
+      format: "YYYY-MM-DD"
+    wordcount:
+      enable: true
+    min2read:
+      enable: true
+      # 每个字词的长度，中文≈2
+      awl: 2
+      # 每分钟阅读字词数。主题默认 60，对中文偏慢（会显示成一百多分钟），
+      # 200 字/分钟 ≈ 400 汉字/分钟，技术文章稍慢一点就取 150。
+      wpm: 150
+    views:
+      enable: false
+
+  updated:
+    enable: false
+
+  # 右侧文章目录
+  toc:
+    enable: true
+    expand_all: false
+    placement: right
+    headingSelector: "h2,h3,h4"
+    collapseDepth: 0
+
+  # 文末版权声明
+  copyright:
+    enable: true
+    license: 'BY-NC-SA'
+    author:
+      enable: true
+    post_date:
+      enable: true
+      format: "LL"
+    update_date:
+      enable: false
+
+  prev_next:
+    enable: true
+
+  image_caption:
+    enable: true
+
+  image_zoom:
+    enable: true
+    img_url_replace: ['', '']
+
+  # 数学公式
+  # 公式本身由 hexo-renderer-markdown-it + KaTeX 在**构建时**渲染成 HTML，
+  # 这里只需要让主题引入 KaTeX 的样式表，所以 engine 选 katex（不会加载 JS）。
+  math:
+    enable: true
+    specific: false
+    engine: katex
+
+  mermaid:
+    enable: false
+
+  # 评论
+  comments:
+    enable: true
+    type: utterances
+
+# ---------- 评论：Utterances ----------
+# 使用前需要给仓库安装 Utterances App 并开启 Issues，详见 README.md
+utterances:
+  repo: CPLASF2049/steven2004.github.io
+  issue_term: pathname
+  label: utterances
+  theme: github-light
+  theme_dark: github-dark
+
+# ---------- 关于页 ----------
+about:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+  avatar: /img/avatar.png
+  name: "Steven"
+  intro: "记录量子计算、机器学习与编程笔记"
+  icons:
+    - { class: "iconfont icon-github-fill", link: "https://github.com/CPLASF2049", tip: "GitHub" }
+    - { class: "iconfont icon-mail-fill", link: "mailto:318264563@qq.com", tip: "邮箱" }
+
+# ---------- 自定义页 / 404 ----------
+page:
+  banner_img: /img/banner.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+page404:
+  enable: true
+  banner_img: /img/banner.jpg
+  banner_img_height: 85
+  banner_mask_alpha: 0.3
+  redirect_delay: 5000
+
+# ---------- CDN ----------
+# 主题默认用 360 前端静态资源库（lib.baomitu.com），国内访问快。
+# KaTeX 的版本要和项目里安装的 katex 一致，否则样式会有细微偏差。
+static_prefix:
+  katex: https://lib.baomitu.com/KaTeX/0.16.3/

@@ -2,7 +2,7 @@
   blog.ps1 —— 博客日常操作脚本
 
   一般不用直接运行它，在项目根目录用 blog.cmd 更方便：
-      blog preview              本地预览
+      blog preview              本地预览（注意地址带仓库名前缀）
       blog new "文章标题" [slug] 新建文章
       blog build                只构建，不发布
       blog deploy               构建并发布站点（推送到 gh-pages）
@@ -79,7 +79,7 @@ function Show-Help {
     Write-Host ''
     Write-Host '  用法：blog <命令> [参数]' -ForegroundColor White
     Write-Host ''
-    Write-Host '    preview               本地预览（http://localhost:4000）'
+    Write-Host '    preview               本地预览（地址会带上 root 前缀）'
     Write-Host '    new "标题" [slug]     新建文章；slug 是英文短名，用于生成网址'
     Write-Host '    build                 只构建到 public/，不发布'
     Write-Host '    deploy                构建并发布站点到 gh-pages 分支'
@@ -95,10 +95,29 @@ function Show-Help {
     Write-Host ''
 }
 
+function Get-SiteRoot {
+    # 站点部署在子路径（项目站点），本地预览地址也要带上这个前缀，否则文章页会 404
+    $cfg = Join-Path $Root '_config.yml'
+    if (Test-Path -LiteralPath $cfg) {
+        $m = [regex]::Match((Get-Content -LiteralPath $cfg -Raw), '(?m)^root:\s*(\S+)')
+        if ($m.Success) {
+            $value = $m.Groups[1].Value.Trim("'").Trim('"')
+            if (-not $value.StartsWith('/')) { $value = '/' + $value }
+            if (-not $value.EndsWith('/')) { $value = $value + '/' }
+            return $value
+        }
+    }
+    return '/'
+}
+
 function Invoke-Preview {
     Assert-Hexo
+    $rootPath = Get-SiteRoot
     Write-Head '本地预览'
-    Write-Info "浏览器打开： http://localhost:4000" 'Green'
+    Write-Info "浏览器打开： http://localhost:4000$rootPath" 'Green'
+    if ($rootPath -ne '/') {
+        Write-Info "（站点配置里的 root 是 $rootPath，所以本地地址也带这一层）"
+    }
     Write-Info '按 Ctrl+C 停止'
     Write-Host ''
     Push-Location $Root
@@ -144,6 +163,9 @@ tags:
   - 待补充
 description: 一句话摘要，会显示在首页列表里，记得改。
 comments: true
+# 首页卡片封面，不写就用主题配置里的默认封面
+#index_img: /img/cover.jpg
+# 需要数学公式时不用管，本站所有文章都已启用
 ---
 
 在这里开始写正文。

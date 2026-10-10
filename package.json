@@ -15,9 +15,9 @@
     "version": "8.1.2"
   },
   "dependencies": {
+    "@renbaoshuo/markdown-it-katex": "^2.0.2",
     "hexo": "^8.0.0",
     "hexo-deployer-git": "^4.0.0",
-    "hexo-filter-mathjax": "^0.11.1",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-feed": "^4.0.0",
@@ -26,11 +26,11 @@
     "hexo-generator-sitemap": "^3.0.1",
     "hexo-generator-tag": "^2.0.0",
     "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-marked": "^7.0.0",
+    "hexo-renderer-markdown-it": "^7.1.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-landscape": "^1.0.0",
-    "hexo-theme-next": "^8.29.0",
-    "hexo-word-counter": "^0.3.0-rc.1"
+    "hexo-theme-fluid": "^1.9.9",
+    "hexo-wordcount": "^6.0.1",
+    "katex": "^0.16.3"
   }
 }
