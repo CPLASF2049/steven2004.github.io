@@ -7,6 +7,7 @@
  *   4. 标签卖萌                      —— 切走标签页时换标题
  *   5. 控制台问候 + 站点运行时间      —— 控制台与页脚
  *   6. 导航栏滚动阴影
+ *   7. 液态玻璃的 SVG 滤镜（供 custom.css 里的液态玻璃引用）
  *
  * 1~3 依赖鼠标与动画，触屏设备或系统开启「减少动态效果」时自动不启用；
  * 4~6 是纯文字/状态类效果，任何环境都保留。
@@ -270,6 +271,63 @@
     update();
   }
 
+  /* ================================================================
+   * 7. 液态玻璃的 SVG 滤镜
+   *
+   * 原理：.liquid-glass 元素的 ::before 用 backdrop-filter 抓到身后的画面，
+   * 再用这个滤镜里的位移贴图把画面「折射」一下，于是玻璃边缘会有水波般的形变。
+   * 滤镜必须先在 DOM 里存在，CSS 的 filter: url(#liquid-glass) 才能引用到。
+   * ================================================================ */
+  function initLiquidGlassFilter() {
+    if (document.getElementById('liquid-glass-filter')) return;
+
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    svg.setAttribute('width', '0');
+    svg.setAttribute('height', '0');
+    svg.style.position = 'absolute';
+    svg.style.pointerEvents = 'none';
+
+    var filter = document.createElementNS(ns, 'filter');
+    filter.setAttribute('id', 'liquid-glass-filter');
+    // 滤镜区域放大一些，免得位移之后边缘被裁掉
+    filter.setAttribute('x', '-30%');
+    filter.setAttribute('y', '-30%');
+    filter.setAttribute('width', '160%');
+    filter.setAttribute('height', '160%');
+    filter.setAttribute('color-interpolation-filters', 'sRGB');
+
+    // 1) 生成一层平滑噪声作为位移贴图
+    var turbulence = document.createElementNS(ns, 'feTurbulence');
+    turbulence.setAttribute('type', 'fractalNoise');
+    turbulence.setAttribute('baseFrequency', '0.02 0.024');
+    turbulence.setAttribute('numOctaves', '1');
+    turbulence.setAttribute('seed', '11');
+    turbulence.setAttribute('result', 'noise');
+
+    // 2) 模糊一下，让位移过渡更像厚玻璃而不是噪点
+    var soften = document.createElementNS(ns, 'feGaussianBlur');
+    soften.setAttribute('in', 'noise');
+    soften.setAttribute('stdDeviation', '1.8');
+    soften.setAttribute('result', 'softNoise');
+
+    // 3) 按噪声的 R/G 通道把画面位移，形成折射
+    var displace = document.createElementNS(ns, 'feDisplacementMap');
+    displace.setAttribute('in', 'SourceGraphic');
+    displace.setAttribute('in2', 'softNoise');
+    displace.setAttribute('scale', '25');
+    displace.setAttribute('xChannelSelector', 'R');
+    displace.setAttribute('yChannelSelector', 'G');
+
+    filter.appendChild(turbulence);
+    filter.appendChild(soften);
+    filter.appendChild(displace);
+    svg.appendChild(filter);
+    document.body.appendChild(svg);
+  }
+
   /* ================================================================ */
   function init() {
     if (!reduceMotion) {
@@ -280,6 +338,7 @@
     initDynamicTitle();
     initRuntime();
     initNavbarShadow();
+    initLiquidGlassFilter();
   }
 
   if (document.readyState === 'loading') {
