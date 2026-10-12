@@ -59,9 +59,11 @@ font:
   letter_spacing: 0.02em
   code_font_size: 85%
 
-# 自定义样式（相对 source 目录）
+# 自定义样式与脚本（路径相对 source 目录）
 custom_css:
   - /css/custom.css
+custom_js:
+  - /js/custom.js
 
 # ---------- 页头 ----------
 navbar:
