@@ -62,54 +62,9 @@ body {
 }
 
 /* ================================================================
-   鼠标交互动效：聚光灯模糊 + 卡片跟随光晕 + 轻微 3D 倾斜
+   鼠标交互动效：卡片跟随光晕 + 轻微 3D 倾斜
    坐标由 source/js/custom.js 通过 CSS 变量写入，这里只负责表现。
    ================================================================ */
-
-:root {
-  /* 光标位置，JS 会实时覆盖 */
-  --spot-x: 50vw;
-  --spot-y: 35vh;
-  /* 清晰区半径：调大更温和 */
-  --spot-radius: 320px;
-  /* 模糊强度：改成 0 就等于关掉聚光灯 */
-  --spot-blur: 3.5px;
-}
-
-/* ---------------------------------------------------------------
-   上层：聚光灯模糊层
-   整层做 backdrop-filter 模糊，再用径向渐变遮罩在光标处挖一个透明的洞
-   --------------------------------------------------------------- */
-.spotlight-overlay {
-  position: fixed;
-  inset: 0;
-  /* 压在顶部导航栏（z-index 1029）之下，保证菜单始终看得清 */
-  z-index: 1028;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  -webkit-backdrop-filter: blur(var(--spot-blur));
-  backdrop-filter: blur(var(--spot-blur));
-  -webkit-mask-image: radial-gradient(
-    circle var(--spot-radius) at var(--spot-x) var(--spot-y),
-    transparent 0,
-    transparent 30%,
-    rgba(0, 0, 0, 0.55) 65%,
-    #000 100%
-  );
-  mask-image: radial-gradient(
-    circle var(--spot-radius) at var(--spot-x) var(--spot-y),
-    transparent 0,
-    transparent 30%,
-    rgba(0, 0, 0, 0.55) 65%,
-    #000 100%
-  );
-}
-
-/* 鼠标第一次移动后才淡入，避免一进页面就是一片糊 */
-.spotlight-overlay.is-active {
-  opacity: 1;
-}
 
 /* ---------------------------------------------------------------
    底层：卡片 3D 倾斜 + 跟随光晕
@@ -196,13 +151,9 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   触屏设备、以及系统开启「减少动态效果」时，整套效果不启用
+   触屏设备、以及系统开启「减少动态效果」时，动作类效果不启用
    --------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce), (hover: none) {
-  .spotlight-overlay {
-    display: none;
-  }
-
   .index-card:hover {
     transform: none;
   }
@@ -216,4 +167,78 @@ body {
     transform: none;
     background-image: none;
   }
+}
+
+/* ================================================================
+   以下动效参考 AnZhiYu 主题：点击爱心、滚动淡入、运行时间、导航栏阴影
+   JS 在 source/js/custom.js
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   鼠标点击爱心
+   --------------------------------------------------------------- */
+.fx-heart {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  line-height: 1;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+  animation: fx-heart-fly 1s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes fx-heart-fly {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+  }
+
+  20% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--heart-x, 0px)), -50%)
+      translateY(-120px) scale(1.15) rotate(var(--heart-rotate, 15deg));
+  }
+}
+
+/* ---------------------------------------------------------------
+   滚动进入视口：淡入 + 上滑
+   元素默认可见，只是进入视口时补一段入场动画，所以不存在「被藏住」的风险。
+   动画用的是 translate（不是 transform），不会和卡片的 hover 3D 倾斜打架。
+   --------------------------------------------------------------- */
+@keyframes fx-reveal-in {
+  from {
+    opacity: 0;
+    translate: 0 22px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.index-card.fx-reveal-play,
+.list-group-item.fx-reveal-play {
+  animation: fx-reveal-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) var(--reveal-delay, 0ms) both;
+}
+
+/* ---------------------------------------------------------------
+   页脚「本站已运行」
+   --------------------------------------------------------------- */
+.site-runtime {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: var(--sec-text-color, #718096);
+}
+
+/* ---------------------------------------------------------------
+   导航栏滚动后加一点阴影，和页面内容分层
+   --------------------------------------------------------------- */
+#navbar.is-scrolled {
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.22);
 }
