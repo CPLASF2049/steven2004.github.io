@@ -68,8 +68,12 @@ custom_js:
 # ---------- 页头 ----------
 navbar:
   blog_title: "Steven's Blog"
+  # 导航栏毛玻璃：让导航栏半透明 + 模糊，这样菜单项上的液态玻璃才有内容可以折射
+  # px 是模糊像素，alpha 是背景不透明度（越小越透）
   ground_glass:
-    enable: false
+    enable: true
+    px: 10
+    alpha: 0.72
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
     - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }

@@ -284,6 +284,42 @@ $$
 
 ---
 
+## 液态玻璃（Liquid Glass）
+
+顶部导航项和分页项是液态玻璃：**CSS 负责玻璃的底、边、高光，SVG 滤镜负责折射**。
+
+| 位置 | 作用 |
+| --- | --- |
+| `source/js/custom.js` 的 `initLiquidGlassFilter()` | 往页面注入 SVG 滤镜 `#liquid-glass-filter` |
+| `source/css/custom.css` 的「液态玻璃」段落 | 把玻璃效果用到导航项与分页项 |
+| `_config.fluid.yml` 的 `navbar.ground_glass` | 让导航栏半透明 + 模糊，玻璃才有内容可折射 |
+
+每个玻璃元素由三层叠出来：
+
+1. `::before` 用 `backdrop-filter: blur()` 抓到身后的画面，再用 `filter: url(#liquid-glass-filter)` 把它折射一下
+2. 元素自身的浅色渐变底，撑出玻璃的体积感
+3. `box-shadow` 做内上高光、内下反光、外投影，形成玻璃的厚边
+
+文字是元素的子元素，不经过滤镜，所以始终清晰。
+
+**调参的地方**：
+
+| 想改什么 | 改哪里 |
+| --- | --- |
+| 模糊强度 | `custom.css` 里的 `blur(3px)` |
+| 折射强度 | `custom.js` 里 `feDisplacementMap` 的 `scale`（默认 25） |
+| 形变粗细 | `custom.js` 里 `feTurbulence` 的 `baseFrequency`（默认 `0.02 0.024`，越低越像厚玻璃） |
+| 导航栏透明度 | `_config.fluid.yml` 的 `navbar.ground_glass.alpha`（默认 0.72） |
+
+> **模糊和折射是此消彼长的。** 模糊太大，背景被抹平，折射就看不出来了 ——
+> 实测 6px 模糊时折射造成的像素差异只有 0.99/255（基本看不见），降到 3px 后是 2.40。
+> 所以调模糊时记得一起看折射还在不在。
+
+**兼容性**：`filter: url()` 引用不到时这条声明会失效，`backdrop-filter` 的模糊依然生效，
+最差情况退化成普通磨砂玻璃，不会坏掉。
+
+---
+
 ## 想改个人信息，改哪里
 
 | 想改什么 | 改哪个文件 |
