@@ -60,3 +60,160 @@ body {
 .index-card .index-header .title:hover {
   color: #37c6c0;
 }
+
+/* ================================================================
+   鼠标交互动效：聚光灯模糊 + 卡片跟随光晕 + 轻微 3D 倾斜
+   坐标由 source/js/custom.js 通过 CSS 变量写入，这里只负责表现。
+   ================================================================ */
+
+:root {
+  /* 光标位置，JS 会实时覆盖 */
+  --spot-x: 50vw;
+  --spot-y: 35vh;
+  /* 清晰区半径：调大更温和 */
+  --spot-radius: 320px;
+  /* 模糊强度：改成 0 就等于关掉聚光灯 */
+  --spot-blur: 3.5px;
+}
+
+/* ---------------------------------------------------------------
+   上层：聚光灯模糊层
+   整层做 backdrop-filter 模糊，再用径向渐变遮罩在光标处挖一个透明的洞
+   --------------------------------------------------------------- */
+.spotlight-overlay {
+  position: fixed;
+  inset: 0;
+  /* 压在顶部导航栏（z-index 1029）之下，保证菜单始终看得清 */
+  z-index: 1028;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  -webkit-backdrop-filter: blur(var(--spot-blur));
+  backdrop-filter: blur(var(--spot-blur));
+  -webkit-mask-image: radial-gradient(
+    circle var(--spot-radius) at var(--spot-x) var(--spot-y),
+    transparent 0,
+    transparent 30%,
+    rgba(0, 0, 0, 0.55) 65%,
+    #000 100%
+  );
+  mask-image: radial-gradient(
+    circle var(--spot-radius) at var(--spot-x) var(--spot-y),
+    transparent 0,
+    transparent 30%,
+    rgba(0, 0, 0, 0.55) 65%,
+    #000 100%
+  );
+}
+
+/* 鼠标第一次移动后才淡入，避免一进页面就是一片糊 */
+.spotlight-overlay.is-active {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   底层：卡片 3D 倾斜 + 跟随光晕
+   --------------------------------------------------------------- */
+.index-card {
+  position: relative;
+  border-radius: 0.5rem;
+  transform-style: preserve-3d;
+  will-change: transform;
+  /* 鼠标离开时慢慢归位 */
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.45s ease;
+}
+
+.index-card:hover {
+  z-index: 2;
+  /* 悬停期间缩短过渡，倾斜才跟得上鼠标 */
+  transition: transform 0.12s ease-out, box-shadow 0.4s ease;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+    translateY(-6px) scale(1.012);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+/* 卡片上的柔光，位置跟着鼠标走 */
+.index-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(55, 198, 192, 0.18),
+    rgba(55, 198, 192, 0.06) 38%,
+    transparent 68%
+  );
+}
+
+/* 边框发光：用遮罩把渐变限制在 1px 的描边上 */
+.index-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    280px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(55, 198, 192, 0.85),
+    rgba(55, 198, 192, 0.22) 42%,
+    transparent 72%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.index-card:hover::before,
+.index-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   归档 / 分类 / 标签页的列表项：只跟随柔光，不做 3D 倾斜
+   --------------------------------------------------------------- */
+.list-group-item {
+  position: relative;
+  border-radius: 0.3rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.list-group-item:hover {
+  transform: translateX(3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background-image: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(55, 198, 192, 0.18),
+    transparent 70%
+  );
+}
+
+/* ---------------------------------------------------------------
+   触屏设备、以及系统开启「减少动态效果」时，整套效果不启用
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce), (hover: none) {
+  .spotlight-overlay {
+    display: none;
+  }
+
+  .index-card:hover {
+    transform: none;
+  }
+
+  .index-card:hover::before,
+  .index-card:hover::after {
+    opacity: 0;
+  }
+
+  .list-group-item:hover {
+    transform: none;
+    background-image: none;
+  }
+}
