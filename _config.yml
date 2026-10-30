@@ -181,5 +181,7 @@ markdown:
     separator: '-'
   images:
     lazyload: false
-    prepend_root: false
+    # 站点部署在 /steven2004.github.io/ 子路径下，文章里写 ![](/img/xxx.png) 这种
+    # 站内绝对路径时必须给 src 补上 root 前缀，否则图片会指向域名根目录而 404
+    prepend_root: true
     post_asset: false
