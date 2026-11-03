@@ -1,0 +1,1498 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/steven2004.github.io/img/favicon.png">
+  <link rel="icon" href="/steven2004.github.io/img/favicon.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Steven">
+  <meta name="keywords" content="博客, 计算机学习, 软件工程, 机器学习, 学习笔记">
+  
+    <meta name="description" content="从一句需求到能跑的 A 股投研 Agent 的完整施工记录：MCP 工具面、Supervisor 编排、降级说实话、审查与事实对账、预算穿透、断线重连，以及那些被推翻的设计。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="金融Fin-agent项目开发版本迭代实录">
+<meta property="og:url" content="https://cplasf2049.github.io/steven2004.github.io/2026/11/04/fin-agent-version-log/index.html">
+<meta property="og:site_name" content="Steven&#39;s Blog">
+<meta property="og:description" content="从一句需求到能跑的 A 股投研 Agent 的完整施工记录：MCP 工具面、Supervisor 编排、降级说实话、审查与事实对账、预算穿透、断线重连，以及那些被推翻的设计。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cplasf2049.github.io/steven2004.github.io/img/cover-agent.jpg">
+<meta property="article:published_time" content="2026-11-03T19:40:00.000Z">
+<meta property="article:modified_time" content="2026-11-03T19:40:00.000Z">
+<meta property="article:author" content="Steven">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="LangGraph">
+<meta property="article:tag" content="MCP">
+<meta property="article:tag" content="Vibe Coding">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="量化投研">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cplasf2049.github.io/steven2004.github.io/img/cover-agent.jpg">
+  
+  
+  
+  <title>金融Fin-agent项目开发版本迭代实录 - Steven&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.3/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/steven2004.github.io/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/steven2004.github.io/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/steven2004.github.io/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/steven2004.github.io/css/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"cplasf2049.github.io","root":"/steven2004.github.io/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h2,h3,h4","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":false,"placement":"right","headingSelector":"h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/steven2004.github.io/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/steven2004.github.io/js/utils.js" ></script>
+  <script  src="/steven2004.github.io/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 8.1.2"><link rel="alternate" href="/steven2004.github.io/atom.xml" title="Steven's Blog" type="application/atom+xml">
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/steven2004.github.io/">
+      <strong>Steven&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content (desktop) -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/steven2004.github.io/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/steven2004.github.io/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/steven2004.github.io/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/steven2004.github.io/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/steven2004.github.io/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile grid menu overlay -->
+<div id="mobile-grid-menu" class="d-lg-none">
+  <div class="mobile-grid-menu-inner">
+    <div class="container">
+      <div class="row">
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/steven2004.github.io/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-home-fill"></i>
+                  <span>首页</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/steven2004.github.io/archives/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-archive-fill"></i>
+                  <span>归档</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/steven2004.github.io/categories/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-category-fill"></i>
+                  <span>分类</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/steven2004.github.io/tags/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-tags-fill"></i>
+                  <span>标签</span>
+                </div>
+              </a>
+            </div>
+          
+        
+          
+          
+          
+          
+            <div class="col-4 mobile-grid-cell">
+              <a href="/steven2004.github.io/about/" target="_self">
+                <div class="mobile-grid-item">
+                  <i class="iconfont icon-user-fill"></i>
+                  <span>关于</span>
+                </div>
+              </a>
+            </div>
+          
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-search-btn">
+            <a href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-search"></i>
+                <span>搜索</span>
+              </div>
+            </a>
+          </div>
+        
+        
+          <div class="col-4 mobile-grid-cell" id="mobile-color-toggle-btn"
+               data-label-light="开灯"
+               data-label-dark="关灯">
+            <a href="javascript:;" aria-label="Color Toggle">
+              <div class="mobile-grid-item">
+                <i class="iconfont icon-dark" id="mobile-color-toggle-icon"></i>
+                <span id="mobile-color-toggle-label">关灯</span>
+              </div>
+            </a>
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/steven2004.github.io/img/cover-agent.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.45)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="金融Fin-agent项目开发版本迭代实录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-11-04 03:40" pubdate>
+          2026-11-04
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          31 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">金融Fin-agent项目开发版本迭代实录</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <blockquote>
+<p>一份从「一句需求」到「一个能跑的 A 股投研 Agent」的完整施工记录。<br>
+面向博客读者：每个阶段都按 <strong>问题 → 为什么这么想 → 解决思路 → 最终方案 → 结果</strong> 拆开写，<br>
+保留走过的弯路和被推翻的判断。</p>
+</blockquote>
+<hr>
+<h2 id="0-先说清楚这是什么">0. 先说清楚这是什么</h2>
+<p><strong>FinancialAI-Agent</strong> 是一个面向 A 股的智能投研 Agent：用大白话提问，它自己规划、<br>
+调用行情工具、算指标、写结论，并且在把结论交给你之前，先过三道关。</p>
+<ul>
+<li><strong>3 个 Agent</strong>：研究（查行情/读财报/筛股票）、量化（回测/持仓）、预警（价格提醒/资金流）</li>
+<li><strong>41 个工具</strong>：按职责拆成 market / quant / portfolio 三个独立 MCP 服务</li>
+<li><strong>4 道关</strong>：逻辑审查（LLM）→ 证据校验（确定性代码）→ 风控硬规则 → 交付</li>
+<li><strong>672 个测试</strong>：全部离线可跑，不需要 API Key，不需要联网</li>
+<li><strong>界面</strong>：SSE 流式、工具调用时间线、断线重连、敏感操作审批</li>
+</ul>
+<p>仓库：<strong><a target="_blank" rel="noopener" href="https://github.com/CPLASF2049/FinancialAI-Agent">https://github.com/CPLASF2049/FinancialAI-Agent</a></strong></p>
+<p>跑起来只要三行：</p>
+<div class="code-wrapper"><pre><code class="hljs bash">pip install -e <span class="hljs-string">&quot;.[dev]&quot;</span>
+<span class="hljs-built_in">cp</span> .env.example .<span class="hljs-built_in">env</span>      <span class="hljs-comment"># 默认已连东方财富，免费、不需要 key</span>
+finagent web              <span class="hljs-comment"># http://127.0.0.1:8000</span></code></pre></div>
+<p>下面开始讲它是怎么一步步变成这样的。</p>
+<hr>
+<h2 id="1-起点：一句模糊的需求">1. 起点：一句模糊的需求</h2>
+<h3 id="问题">问题</h3>
+<p>最初的原始项目是 GitHub 上一个小的金融分析 demo。需求只有六个字：</p>
+<blockquote>
+<p>「把这个改造成 mcp+langgraph 的项目」</p>
+</blockquote>
+<p>没有验收标准，没有设计文档，也没说要做成什么样。</p>
+<h3 id="为什么这么想">为什么这么想</h3>
+<p>一个改造类需求，最容易踩的坑是「换个包装就当改造完了」。所以在动手之前，<br>
+先问了一个问题：<strong>MCP 到底解决了什么？</strong></p>
+<p>如果答案只是「把函数换个方式注册」，那这次改造没有价值——多一层协议，<br>
+只是多一层故障点。</p>
+<p>我们给出的判断是：<strong>MCP 的价值是「工具面可替换」</strong>。<br>
+数据源从离线 fixture 换成 Tushare、再换成东方财富，上层 41 个工具一行都不用改。<br>
+这才是值得付协议成本的理由。</p>
+<h3 id="解决思路">解决思路</h3>
+<p>有三条路：</p>
+<ol>
+<li><strong>按专家切图</strong>：每个专家一个子图，专家之间互相调用</li>
+<li><strong>按步骤切图</strong>：取数 → 分析 → 审查 → 交付</li>
+<li><strong>Supervisor 编排</strong>：一个调度节点决定「下一步谁干活」，专家之间不互相调用</li>
+</ol>
+<p>第 1 条的问题是耦合：专家 A 要改，得知道专家 B 的输入输出格式。<br>
+第 2 条的问题是僵硬：金融问题常常需要回退（数据不够就再查一次），线性的图不好表达。<br>
+第 3 条把「谁下一步干活」收敛到一个地方，专家只负责自己的事。</p>
+<h3 id="最终方案">最终方案</h3>
+<ul>
+<li>工具层抽象成 <code>Provider</code> 接口，工具只依赖接口，不依赖具体数据源</li>
+<li>图用 <code>StateGraph</code>，Supervisor 用 <code>Command(goto=...)</code> 做路由</li>
+<li>三个专家节点，各自有<strong>互不重叠</strong>的工具白名单（<code>PASS_TOOLS</code>）</li>
+<li>状态里带 <code>completed_agents</code> / <code>agent_hops</code>，防止重复派发</li>
+</ul>
+<h3 id="结果">结果</h3>
+<p>这个判断后来救了整个项目：数据源被封、被限流、换供应商，都只是换一个 provider<br>
+实现，上层零改动。</p>
+<hr>
+<h2 id="2-真实数据：从-fixture-到东方财富">2. 真实数据：从 fixture 到东方财富</h2>
+<h3 id="问题-2">问题</h3>
+<p>第一版能跑，但数据是离线 fixture。用户的要求很直接：</p>
+<blockquote>
+<p>「第一步：强制启用真实数据 Provider……我要的是真实的数据跑起来」</p>
+</blockquote>
+<h3 id="为什么这么想-2">为什么这么想</h3>
+<p>演示数据和真实数据的差别不是「真假」，而是<strong>脏</strong>。真实数据会：</p>
+<ul>
+<li>缺字段（某些股票没有行业分类）</li>
+<li>有时延（收盘后一段时间才更新）</li>
+<li>会限流（连续请求直接被断连）</li>
+<li>格式不统一（万元/元、手/股、是否有复权）</li>
+</ul>
+<p>用 fixture 写的代码，上线第一天就会崩。</p>
+<h3 id="解决思路-2">解决思路</h3>
+<p>三条路：买 Tushare 的 token、爬付费接口、找不需要 key 的公开接口。</p>
+<p>我们选了第三条：<strong>东方财富的公开行情接口</strong>。免费、免注册、数据是真的。</p>
+<p>代价是这类接口不稳定——但这个代价是可以工程化处理的，而「没有 token 就跑不了」<br>
+是无法工程化处理的。</p>
+<h3 id="最终方案-2">最终方案</h3>
+<ul>
+<li><code>EastmoneyProvider</code>：日线、实时报价、估值、指数、全市场选股池</li>
+<li>字段统一到一套口径（<code>ts_code</code>、万元、手），上层不用感知数据源</li>
+<li>磁盘缓存合并：全市场列表一次抓不完就分页追加，下次接着用</li>
+<li>完整性标记：<code>last_universe_complete</code> / <code>last_universe_source</code></li>
+</ul>
+<h3 id="结果-2">结果</h3>
+<p>真实数据跑通了。然后立刻遇到了下一个问题。</p>
+<hr>
+<h2 id="3-IP-被封：备用源与「降级要说实话」">3. IP 被封：备用源与「降级要说实话」</h2>
+<h3 id="问题-3">问题</h3>
+<p>跑了几轮全市场选股之后，东方财富开始返回 <code>RemoteDisconnected</code>。<br>
+排查发现：K 线接口还活着，但报价和列表接口全死——典型的按接口限流/封禁。</p>
+<h3 id="为什么这么想-3">为什么这么想</h3>
+<p>这时候有个诱人的捷径：<strong>接口失败就返回空结果</strong>。界面不报错，用户以为「今天没数据」。</p>
+<p>这是最危险的做法。金融场景里，<strong>假阴性比报错危险得多</strong>：<br>
+按行业筛银行股，返回空列表会让用户以为「银行股都不满足条件」，<br>
+而真相是「我们没拿到行业字段」。</p>
+<p>所以定下一条原则：<strong>降级必须说实话</strong>。</p>
+<h3 id="解决思路-3">解决思路</h3>
+<ol>
+<li>加备用源：新浪的实时报价和全市场列表</li>
+<li>字段口径对齐到同一套，上层不感知切换</li>
+<li>拿不全时明确标注，而不是假装拿全了</li>
+</ol>
+<h3 id="最终方案-3">最终方案</h3>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只拿到部分市场</td>
+<td>标 <code>universe_complete=false</code> + warning，绝不把「命中 N 只」当全量</td>
+</tr>
+<tr>
+<td>备用源没有行业分类</td>
+<td>按行业筛<strong>直接报错</strong>，并提示「可用 mx_stock_screen」</td>
+</tr>
+<tr>
+<td>两个源都挂</td>
+<td>抛 <code>ProviderUnavailable</code>，带可操作 hint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="结果-3">结果</h3>
+<p>这条原则后来贯穿到整个项目：部分成功、证据等级、终止原因，都是同一个思路的延伸——<br>
+<strong>失败要有名字，不能沉默。</strong></p>
+<hr>
+<h2 id="4-审查者瞎报：命名空间与「与事实对账」">4. 审查者瞎报：命名空间与「与事实对账」</h2>
+<h3 id="问题-4">问题</h3>
+<p>用户贴回来一段日志：</p>
+<blockquote>
+<p>「本轮专家未调用任何工具，结论中 24 只标的……均无工具返回依据」</p>
+</blockquote>
+<p>但同一个界面上明明显示 <code>✓ screen_stocks</code> 成功了。</p>
+<p>后果是致命的：审查者每次都判定「结论没有依据」→ 专家返工 → 再来一遍 →<br>
+再被判无依据。<strong>token 翻倍，时间翻倍，结论还是一样。</strong></p>
+<h3 id="为什么这么想-4">为什么这么想</h3>
+<p>第一反应是「模型在瞎说」。但去看 trace 之后发现，模型说的其实是它看到的事实——<br>
+它拿到的记录里，agent 字段是 <code>researcher:screening</code>，而过滤条件是 <code>researcher</code>。</p>
+<p><strong>精确匹配，永远匹配不到。</strong></p>
+<p>这类 bug 最难查的地方在于：它不报错。日志里每一行都很合理：<br>
+「审查完成，判定返工」——单看每一条都对，连起来就是死循环。</p>
+<h3 id="解决思路-4">解决思路</h3>
+<ol>
+<li>修命名：trace 记录用裸 agent 名，子职责放到独立的 <code>stage</code> 字段</li>
+<li>加前缀兜底：<code>researcher:screening</code> 也能匹配 <code>researcher</code></li>
+<li><strong>更根本的一条</strong>：审查意见必须和事实对账</li>
+</ol>
+<p>第 3 条是这次事故最大的收获。模型说「没调工具」，但记录里有 4 次调用——<br>
+这条意见直接作废。模型说「15/16 个数字没出处」，但规则核对显示 90% 有出处——<br>
+也作废。</p>
+<blockquote>
+<p><strong>定性判断仍然听模型的；事实性判断必须和记录对账。</strong></p>
+</blockquote>
+<h3 id="最终方案-4">最终方案</h3>
+<ul>
+<li><code>reconcile()</code>：在规则审查和模型审查之间对账，丢弃被事实推翻的意见</li>
+<li>规则先跑，模型只补充规则覆盖不到的部分</li>
+<li>代码验证不复用模型生成的代码：只允许注册表里的策略 ID，<br>
+用子进程按 spec 重跑一遍再比对指标</li>
+</ul>
+<h3 id="结果-4">结果</h3>
+<p>同一个问题：<strong>370 秒 + 2 次返工 → 138 秒 + 0 次返工</strong>。</p>
+<hr>
+<h2 id="5-卡死烧-Token：蹦不出字（整个项目最痛的一章）">5. 卡死烧 Token：蹦不出字（整个项目最痛的一章）</h2>
+<blockquote>
+<p>「AI 一直卡死、消耗大量 Token 却跑不出结果」<br>
+「当时特别关键，蹦不出字」</p>
+</blockquote>
+<h3 id="问题-5">问题</h3>
+<p>用户看到的永远是同一个画面：光标在转，什么都没有，等 3 分钟，<br>
+要么空白，要么突然冒出一大段。而账单上 token 已经烧掉几万。</p>
+<p>最要命的是：<strong>三种完全不同的病，表象一模一样。</strong></p>
+<table>
+<thead>
+<tr>
+<th>表象</th>
+<th>真实情况</th>
+<th>用户以为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>白屏 30–90 秒后突然出字</td>
+<td>模型在思考，token 在生成，但只显示 <code>content</code></td>
+<td>卡死了</td>
+</tr>
+<tr>
+<td>白屏 2 分钟以上，最后超时</td>
+<td>专家内部循环失控，一个工具反复失败反复重试</td>
+<td>网络问题</td>
+</tr>
+<tr>
+<td>出字了又被打回，反复重写</td>
+<td>审查者误判，触发无限返工</td>
+<td>模型太笨</td>
+</tr>
+</tbody>
+</table>
+<p>三种混在一起，用户没法判断该等、该刷新、还是该改问法。</p>
+<h3 id="为什么这么想-5">为什么这么想</h3>
+<p>排查时先做了一件反直觉的事：<strong>不接受「卡住」这个描述</strong>。</p>
+<p>「卡住」是现象，不是原因。所以把它拆成三个可观测的问题：</p>
+<ol>
+<li>模型到底有没有在生成？（看 token 用量曲线）</li>
+<li>如果有，为什么界面没有？（看事件流）</li>
+<li>如果事件流也没有，是谁没发？（看发射点）</li>
+</ol>
+<p>拆完发现是五个独立的洞，只是恰好同时出现。</p>
+<h3 id="解决思路-5">解决思路</h3>
+<p>按「先止血、再治本、最后给可见性」的顺序，而不是一次全改：</p>
+<ol>
+<li><strong>止血</strong>：让最极端的情况先停下来（预算）</li>
+<li><strong>治本</strong>：让停下来这件事可解释（终止原因枚举）</li>
+<li><strong>可见性</strong>：让用户知道它在动（流式 + 阶段事件 + 心跳）</li>
+</ol>
+<h3 id="最终方案：五道防线">最终方案：五道防线</h3>
+<p><strong>第一道 · 四重预算，穿透到最内层</strong></p>
+<div class="code-wrapper"><pre><code class="hljs python">Budget(max_llm_calls=<span class="hljs-number">15</span>, max_tool_calls=<span class="hljs-number">40</span>, max_retries=<span class="hljs-number">2</span>, timeout_seconds=<span class="hljs-number">180</span>)</code></pre></div>
+<p>关键不是「有预算」，而是<strong>检查点在哪</strong>：在 <code>AgentRuntime</code> 每一轮循环开头，<br>
+也就是模型调用之前、工具执行之前——最内层。</p>
+<div class="code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_preflight</span>(<span class="hljs-params">self, iteration, outcome</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_cancelled():               <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;cancelled&quot;</span>
+    <span class="hljs-keyword">if</span> time.monotonic() &gt; <span class="hljs-variable language_">self</span>.deadline:  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;deadline&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>._tokens &gt; <span class="hljs-variable language_">self</span>.token_budget:  <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;budget_tokens&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.stats.total &gt;= max_tool_calls: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;budget_tool_calls&quot;</span></code></pre></div>
+<p>顺序固定：<strong>取消 &gt; 时间 &gt; token &gt; 次数</strong>。越靠前越紧急。</p>
+<p><strong>第二道 · 终止原因是枚举出来的</strong></p>
+<div class="code-wrapper"><pre><code class="hljs nix">submit <span class="hljs-symbol">/</span> budget_iterations <span class="hljs-symbol">/</span> budget_tokens <span class="hljs-symbol">/</span> budget_wallclock
+tool_failure <span class="hljs-symbol">/</span> no_progress <span class="hljs-symbol">/</span> model_failure <span class="hljs-symbol">/</span> contract_violation <span class="hljs-symbol">/</span> cancelled</code></pre></div>
+<p>「做完了」和「预算耗尽」是两件事。前者交付完整结论，后者交付部分结果 + 说明。</p>
+<p><strong>第三道 · 无进展守卫 + 返工预算</strong></p>
+<p>进展指标一开始写错了：用「累计工具调用数」，一直失败一直重试也会让它增长，<br>
+恰好识别不出「烧 token 没结果」的形态。改成只看<strong>成功调用 + 文本长度</strong>：</p>
+<div class="code-wrapper"><pre><code class="hljs python">progress = stats.succeeded + <span class="hljs-built_in">len</span>(text)
+<span class="hljs-keyword">if</span> progress &lt;= last_progress:
+    stall += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">if</span> stall &gt;= <span class="hljs-number">2</span>: 停</code></pre></div>
+<p><strong>第四道 · 空回复不算完成</strong></p>
+<p>这条是后来才发现的，也是最讽刺的一条：模型返回空内容时（不带 tool_calls），<br>
+旧逻辑直接 <code>stopped_reason = completed</code>、<code>text</code> 为空——界面看起来「跑完了」，<br>
+实际什么都没有。</p>
+<p>这就是用户说的「蹦不出字」本身。现在：空回复先重试一次，仍为空则<br>
+<code>model_failure</code>，并给一句可读说明。</p>
+<p><strong>第五道 · 等待必须有反馈</strong></p>
+<ul>
+<li>token 事件：每吐一个字推一次 SSE</li>
+<li>阶段事件：<code>step:start</code> / <code>tool:*</code> / <code>critic</code> 告诉用户在干什么</li>
+<li>心跳：15 秒没有新事件就 <code>ping</code>，前端据此判断连接</li>
+</ul>
+<h3 id="结果-5">结果</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>修之前</th>
+<th>修之后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>典型一轮耗时</td>
+<td>370 秒</td>
+<td>138 秒</td>
+</tr>
+<tr>
+<td>返工次数</td>
+<td>2 次</td>
+<td>0 次</td>
+</tr>
+<tr>
+<td>首字出现</td>
+<td>20–90 秒（或永远不来）</td>
+<td>模型开始输出的第一刻 + 阶段事件兜底</td>
+</tr>
+<tr>
+<td>失败可见性</td>
+<td>无</td>
+<td>终止原因 + 事件表</td>
+</tr>
+</tbody>
+</table>
+<h3 id="这一章留下的四条教训">这一章留下的四条教训</h3>
+<ol>
+<li><strong>预算必须穿透到最内层循环。</strong> 只在顶层检查等于没有。</li>
+<li><strong>参数存在 ≠ 参数生效。</strong> 曾经 <code>deadline</code> 参数加了、逻辑写了、测试过了，<br>
+唯独调用点没传。要测「超时一定停」，不要测「函数收到 deadline」。</li>
+<li><strong>没有终止原因的失败，等于没法排查。</strong></li>
+<li><strong>等待必须有反馈。</strong> 用户受不了的不是慢，是不知道还要不要等。</li>
+</ol>
+<hr>
+<h2 id="6-界面点不动、空对话堆积">6. 界面点不动、空对话堆积</h2>
+<h3 id="问题-6">问题</h3>
+<blockquote>
+<p>「总是出现按钮点不动了，刷新之后发现新对话很多了几个空对话」</p>
+</blockquote>
+<h3 id="为什么这么想-6">为什么这么想</h3>
+<p>两个现象看起来无关，其实是一条因果链：</p>
+<p><strong>流卡住 → 用户以为没反应 → 连点「新建对话」→ 每次点击都 POST 一个会话 → 堆一排空会话。</strong></p>
+<p>而按钮点不动的直接原因，是 SSE 流卡住时前端没有超时机制，<br>
+<code>state.streaming</code> 永远是 <code>true</code>，「发送」被永久禁用。</p>
+<h3 id="解决思路-6">解决思路</h3>
+<ul>
+<li>前端加看门狗：2 分钟没有任何输出就主动收尾，把界面还给用户</li>
+<li>「新建对话」不再每次 POST</li>
+<li>心跳事件让前端能判断连接是否还活着</li>
+</ul>
+<h3 id="最终方案-5">最终方案</h3>
+<p>后来这套方案被用户推翻了，因为更符合直觉的做法是：</p>
+<p><strong>点「新建对话」就建一条空会话，但没说过话就切走要自动删掉。</strong></p>
+<p>于是最终形态：</p>
+<table>
+<thead>
+<tr>
+<th>行为</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建 → 建空会话</td>
+<td>立刻 POST，切走再切回还在</td>
+</tr>
+<tr>
+<td>没说话就切走</td>
+<td><code>DELETE ?if_empty=1</code>，只删空的</td>
+</tr>
+<tr>
+<td>发过内容 → 固定</td>
+<td>一旦发送就不再是 draft</td>
+</tr>
+<tr>
+<td>标题</td>
+<td>从首条内容提炼（去寒暄前缀、去尾标点、截 24 字）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="结果-6">结果</h3>
+<p>这条经历说明：<strong>需求会反向修正设计。</strong><br>
+第一版为了防堆积而「不建会话」，其实是牺牲了用户的心理模型。</p>
+<hr>
+<h2 id="7-2-0：把执行骨架重做一遍">7. 2.0：把执行骨架重做一遍</h2>
+<p>用户给了一份完整的架构评审，六个 P0/P1 项。这不是加功能，是<strong>重做骨架</strong>。</p>
+<h3 id="P0-1-Provider-层：能力注册中心-策略网关">P0-1 Provider 层：能力注册中心 + 策略网关</h3>
+<p><strong>问题</strong>：限流、断连、超时、空数据，四类故障在每个工具里各写一遍，口径不一。</p>
+<p><strong>为什么这么想</strong>：这些是<strong>数据源的共性</strong>，不是某个工具的特性。放在工具里，<br>
+41 个工具就有 41 套重试逻辑。</p>
+<p><strong>解决思路</strong>：</p>
+<ul>
+<li>通道层：重试、退避、熔断、降级（provider 之间）</li>
+<li>网关层：缓存、并发合并、超时（与具体数据源无关）</li>
+</ul>
+<p><strong>最终方案</strong>：</p>
+<div class="code-wrapper"><pre><code class="hljs python">PROVIDER_CAPABILITIES = &#123;<span class="hljs-string">&quot;eastmoney&quot;</span>: &#123;<span class="hljs-string">&quot;daily&quot;</span>, <span class="hljs-string">&quot;realtime&quot;</span>, ...&#125;, ...&#125;
+CallResult = SUCCESS | PARTIAL_SUCCESS | PROVIDER_UNAVAILABLE</code></pre></div>
+<p>熔断（连续失败 → 冷却 30s）、缓存（快照 5s / 日线 60s / 选股池 300s）、<br>
+singleflight（并发合并）、三态返回。</p>
+<p><strong>结果</strong>：41 个工具一行没改，全都获得了这些策略。<br>
+同时暴露一个隐藏问题——<code>FinAgentError.code</code> 是类属性，没法按场景区分错误码，<br>
+于是扩展成实例级 <code>code</code> / <code>retryable</code> / <code>provider</code>。</p>
+<h3 id="P0-2-统一工具执行管线">P0-2 统一工具执行管线</h3>
+<p><strong>问题</strong>：日志里出现过「连续 4 次工具失败」和「错误=0」同时出现。</p>
+<p><strong>为什么这么想</strong>：失败计数和错误列表是两套变量，各数各的。</p>
+<p><strong>解决思路</strong>：所有工具走同一个执行器，统计从执行结果派生，不手工累加。</p>
+<p><strong>最终方案</strong>：<code>ToolResult</code>（状态/错误码/可重试/耗时）+ <code>ToolStats</code><br>
+（total / succeeded / partial / failed / unsupported / skipped / retries）。</p>
+<p>关键区分：<strong><code>unsupported</code> 不算失败</strong>。它是能力边界（当前数据源没这项能力），<br>
+重复出现不该触发刹车。</p>
+<p><strong>结果</strong>：日志变成「工具=10[成功6/失败3/不支持1/重试2]」，不再自相矛盾。<br>
+实现时还踩了个坑：MCP 适配器返回的是 <code>[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:...}]</code> 这种<br>
+content-block 列表，不处理会把错误信封当成成功文本。</p>
+<h3 id="P0-3-独立的证据校验器">P0-3 独立的证据校验器</h3>
+<p><strong>问题</strong>：审查者是语言模型，能判断「这段话顺不顺」，判断不了「32.25 是不是今天的收盘价」。</p>
+<p><strong>为什么这么想</strong>：模型可能真诚地说「15/16 个数字有出处」——它真的这么认为。</p>
+<p><strong>解决思路</strong>：把「数字对不对」从模型手里拿走，用确定性代码做三件事：</p>
+<ol>
+<li>数字能否在工具返回里找到出处</li>
+<li>区间涨幅能否用首尾价重算</li>
+<li>数据时点是否过期</li>
+</ol>
+<p><strong>最终方案</strong>：五种证据等级 <code>VERIFIED / PARTIALLY_VERIFIED / UNVERIFIED / CONFLICTED / STALE</code>，<br>
+只有前两种允许当「确定数字」发布。</p>
+<p><strong>踩的坑</strong>（都是&quot;看起来能跑、算出来是错的&quot;）：</p>
+<ul>
+<li>日期 <code>20261001</code> 被当成价格，区间涨幅算成 <strong>-100%</strong></li>
+<li>百分比拿去和「元」的数字池比对，<code>30%</code> 命中 <code>30.0 元</code>，误判为已验证</li>
+</ul>
+<p><strong>结果</strong>：模型算错涨幅会被立刻拦下。</p>
+<h3 id="P1-4-统一执行循环-三层上下文">P1-4 统一执行循环 + 三层上下文</h3>
+<p><strong>问题</strong>：每个专家各写一套「模型→工具→模型」循环，预算和压缩各实现一遍。</p>
+<p><strong>为什么这么想</strong>：循环是共性，差异只在 prompt 和工具白名单。</p>
+<p><strong>最终方案</strong>：<code>AgentRuntime</code> 统一循环；上下文分三层：</p>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>压缩策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core</code></td>
+<td>用户目标、约束</td>
+<td><strong>永不压缩</strong></td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>专家结论、证据引用</td>
+<td>折叠成一条</td>
+</tr>
+<tr>
+<td><code>detail</code></td>
+<td>工具原始返回</td>
+<td>最先压缩成引用 + 摘要</td>
+</tr>
+</tbody>
+</table>
+<p>压掉的原文登记在 <code>context.references</code>——压缩不等于丢失。</p>
+<h3 id="P1-5-三模块边界-部分成功">P1-5 三模块边界 + 部分成功</h3>
+<p><strong>问题</strong>：任何一项数据失败，整段结论都可能被写成「数据不可用」，<br>
+用户连已经拿到的价格都看不到。</p>
+<p><strong>为什么这么想</strong>：一刀切的失败是最省事的失败，也是最没用的失败。</p>
+<p><strong>最终方案</strong>：请求拆成必做 / 可选子任务。</p>
+<div class="code-wrapper"><pre><code class="hljs csharp">必做项全满足 → complete
+必做项部分缺失 → <span class="hljs-keyword">partial</span>，正文末尾写「缺少：近期走势」
+可选项失败 → 不影响交付，只提一句「未覆盖」</code></pre></div>
+<p><strong>踩的坑</strong>：走势最初被「单次报价」满足，导致只查了现价也判 complete——<br>
+走势必须有价格序列，已修正并加测试。</p>
+<h3 id="P1-6-后台运行与断线重连">P1-6 后台运行与断线重连</h3>
+<p><strong>问题</strong>：</p>
+<blockquote>
+<p>「生成过程中切换到别的对话后，这个对话就不生成了，回来之后变成一片空白」</p>
+</blockquote>
+<p><strong>为什么这么想</strong>：执行的生命周期挂在 HTTP 请求上，客户端一断，执行就死。</p>
+<p><strong>最终方案</strong>：执行与投递解耦。</p>
+<div class="code-wrapper"><pre><code class="hljs applescript"><span class="hljs-built_in">run</span>（后台任务） → 缓冲（可重放） → 订阅者</code></pre></div>
+<ul>
+<li>断开只结束投递，后台继续跑</li>
+<li>重连带 <code>after=&lt;seq&gt;</code> 续播，不重跑</li>
+<li>心跳 15 秒</li>
+</ul>
+<p>实现时修了个通知竞态：<code>asyncio.Condition</code> 的 <code>notify</code> 早于 <code>wait</code> 注册会丢，<br>
+表现为「重连后卡住」。改成显式 waiter 列表。</p>
+<p><strong>结果</strong>：连接只读两行就断开，3 秒后后台已跑完（33 个事件、状态 done），<br>
+重连补发 8090 字节含 <code>done</code>。</p>
+<hr>
+<h2 id="8-前端：先重做，再回滚">8. 前端：先重做，再回滚</h2>
+<h3 id="问题-7">问题</h3>
+<p>用户给了一份非常具体的设计规范（Claude Code 风格），核心是「可观察的自主性」。</p>
+<h3 id="为什么这么想-7">为什么这么想</h3>
+<p>上 React 需要构建链。项目原本是零构建的静态 HTML/JS。两条路：</p>
+<ul>
+<li><strong>CDN + Babel standalone</strong>：不用构建，但依赖 CDN 可达、首屏要等编译</li>
+<li><strong>Vite + Tailwind</strong>：需要 <code>package.json</code>，但产物是静态文件，部署不用装 Node</li>
+</ul>
+<h3 id="最终方案（第一版）">最终方案（第一版）</h3>
+<p>选了 Vite：31 个模块、JS 159KB（gzip 51.8KB）、1.6 秒构建。<br>
+权限审批做成了<strong>真的后端闸门</strong>——工具执行前挂起等 future，拒绝就不执行。</p>
+<h3 id="结果-7">结果</h3>
+<p><strong>几天后用户要求回滚。</strong></p>
+<blockquote>
+<p>「前端页面直接回滚，不需要这个样子了，回到原来的样子」</p>
+</blockquote>
+<p>这不是失败，是 Vibe Coding 的真实一部分：<strong>设计规范写得再好，<br>
+也不等于日常使用顺手。</strong> 终端风格适合长时间盯日志，不适合随手问一句「茅台多少钱」。</p>
+<p>回滚时顺手修了一个真 bug：经典界面里</p>
+<div class="code-wrapper"><pre><code class="hljs js">provider === <span class="hljs-string">&quot;tushare&quot;</span> ? <span class="hljs-string">&quot;Tushare 行情&quot;</span> : <span class="hljs-string">&quot;离线演示数据&quot;</span></code></pre></div>
+<p>只判断了一个分支，于是 eastmoney 的真实行情一直被标成「离线演示数据」。<br>
+用户提了好几次「离线演示数据不要出现」，根因是这一行。</p>
+<p><strong>教训：用户反复报同一个问题，说明我们一直在修错的地方。</strong></p>
+<hr>
+<h2 id="9-外部视角：当别人拿这个项目写简历">9. 外部视角：当别人拿这个项目写简历</h2>
+<h3 id="问题-8">问题</h3>
+<p>有人在另一个对话里拿这个项目写简历，写了科研 / Agent 开发 / 量化三个版本。</p>
+<h3 id="为什么值得记">为什么值得记</h3>
+<p><strong>一个人会怎么向别人介绍你的项目，暴露了你的重心在哪。</strong></p>
+<h3 id="它挑中的卖点">它挑中的卖点</h3>
+<table>
+<thead>
+<tr>
+<th>方向</th>
+<th>挑中的机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>科研</td>
+<td>「确定性基线 + LLM」双模式，可作对照组</td>
+</tr>
+<tr>
+<td>工程</td>
+<td>MCP 三层解耦 + 有状态编排 + 决策轨迹可观测</td>
+</tr>
+<tr>
+<td>量化</td>
+<td>回测引擎 + 选股器 + 风控规则</td>
+</tr>
+</tbody>
+</table>
+<p>没有一个版本把「多 Agent 协作」当核心卖点。理由是：</p>
+<blockquote>
+<p>不要只写「做了多 Agent」，要写清楚<strong>哪个机制能被单独开关、用来度量什么</strong>。</p>
+</blockquote>
+<h3 id="它逼出的差距">它逼出的差距</h3>
+<p>顺着「可消融」推，最自然的因子是 Critic、RiskGuard、离线模式。<br>
+前两个<strong>我们没做成开关</strong>，审查链是写死的——所以能说「有审查」，<br>
+说不清「审查带来多少改善」。</p>
+<h3 id="它暴露的滞后">它暴露的滞后</h3>
+<p>那个对话里写的是「6 个专家、352 个测试」，当前仓库是「3 个 Agent、672 个测试」。</p>
+<p><strong>对外材料比代码滞后了一个大版本。</strong> 教训：写进对外材料的数字，<br>
+必须能用一条命令复现。</p>
+<hr>
+<h2 id="10-方法论：可以复用的部分">10. 方法论：可以复用的部分</h2>
+<h3 id="每次修-bug-的三步">每次修 bug 的三步</h3>
+<ol>
+<li><strong>复现</strong>——本地跑一遍，不靠猜</li>
+<li><strong>找根因</strong>——不是「看起来像什么」，是「哪一行导致的」</li>
+<li><strong>加测试</strong>——修完必须有一条用例钉住</li>
+</ol>
+<p>这份记录里大部分「故障」，最后都变成了 <code>tests/</code> 下的一个文件。</p>
+<h3 id="五个判断，事后看是对的">五个判断，事后看是对的</h3>
+<ol>
+<li><strong>Provider 抽象</strong>——救了后面所有数据源问题</li>
+<li><strong>降级说实话</strong>——假阴性比报错危险</li>
+<li><strong>数字交给代码算</strong>——模型算涨跌幅一定会错</li>
+<li><strong>预算穿透到最内层</strong>——只在顶层检查等于没有</li>
+<li><strong>审查意见要和事实对账</strong>——模型会编理由，记录不会</li>
+</ol>
+<h3 id="四个判断，事后看是错的">四个判断，事后看是错的</h3>
+<ol>
+<li>以为「不建空会话」能解决堆积——牺牲了用户直觉</li>
+<li>以为预算参数加上就生效——写了没人传</li>
+<li>以为改完代码用户就能看到——没重启进程，用户看的一直是旧版本</li>
+<li>以为测试覆盖就等于对了——「日期当价格」这种 bug，不写用例发现不了</li>
+</ol>
+<h3 id="一条贯穿始终的原则">一条贯穿始终的原则</h3>
+<p><strong>失败要有名字。</strong></p>
+<ul>
+<li>数据源降级 → <code>universe_complete=false</code></li>
+<li>证据不足 → <code>UNVERIFIED</code> / <code>CONFLICTED</code> / <code>STALE</code></li>
+<li>执行结束 → <code>submit</code> / <code>budget_tokens</code> / <code>no_progress</code> / <code>model_failure</code></li>
+<li>部分交付 → <code>partial</code> + 「缺少：近期走势」</li>
+</ul>
+<p>没有名字的失败，只是一个黑洞。用户看不懂，自己也查不动。</p>
+<hr>
+<h2 id="11-附录：一些数字">11. 附录：一些数字</h2>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MCP 工具</td>
+<td>41 个（market / quant / portfolio 三个服务）</td>
+</tr>
+<tr>
+<td>Agent</td>
+<td>3 个（研究 / 量化 / 预警）</td>
+</tr>
+<tr>
+<td>测试</td>
+<td>672 passed / 1 skipped</td>
+</tr>
+<tr>
+<td>评测集</td>
+<td>34 条 golden 任务，14 类</td>
+</tr>
+<tr>
+<td>回测策略</td>
+<td>23 个</td>
+</tr>
+<tr>
+<td>数据源</td>
+<td>东方财富（默认）/ 新浪（备用）/ Tushare / 妙想 Skills</td>
+</tr>
+<tr>
+<td>典型一轮耗时</td>
+<td>138 秒（修复前 370 秒）</td>
+</tr>
+</tbody>
+</table>
+<p>所有数字都能用一条命令复现：</p>
+<div class="code-wrapper"><pre><code class="hljs bash">python -m pytest -q          <span class="hljs-comment"># 672 passed</span>
+curl /api/info               <span class="hljs-comment"># tool_count / experts / build</span>
+python scripts/eval_suite.py <span class="hljs-comment"># 评测集</span></code></pre></div>
+<hr>
+<h2 id="写在最后">写在最后</h2>
+<p>这个项目不是一次设计出来的。它是被一系列具体故障推着长大的：</p>
+<p>IP 被封 → 有了备用源和「降级说实话」；<br>
+审查者误判 → 有了「与事实对账」；<br>
+卡死烧 token → 有了预算穿透和终止原因；<br>
+数字被编 → 有了证据校验；<br>
+切走就白跑 → 有了后台执行；<br>
+前端重做又回滚 → 有了「用户顺手比设计规范重要」。</p>
+<p><strong>每一次都是先被咬一口，才长出那块骨头。</strong></p>
+<p>如果这篇实录只能留下一句话，我想是这句：</p>
+<blockquote>
+<p>不要相信「看起来在跑」，要让它<strong>说出自己在跑什么、跑到哪、为什么停</strong>。</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/steven2004.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/" class="category-chain-item">项目实践</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/steven2004.github.io/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/steven2004.github.io/tags/MCP/" class="print-no-link">#MCP</a>
+      
+        <a href="/steven2004.github.io/tags/LangGraph/" class="print-no-link">#LangGraph</a>
+      
+        <a href="/steven2004.github.io/tags/Vibe-Coding/" class="print-no-link">#Vibe Coding</a>
+      
+        <a href="/steven2004.github.io/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" class="print-no-link">#大模型</a>
+      
+        <a href="/steven2004.github.io/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E7%A0%94/" class="print-no-link">#量化投研</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>金融Fin-agent项目开发版本迭代实录</div>
+      <div>https://cplasf2049.github.io/steven2004.github.io/2026/11/04/fin-agent-version-log/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Steven</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2026年11月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-cc-nc"></i>
+                  </span>
+                </a>
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-cc-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" title="量子自编码网络学习笔记">
+                        <span class="hidden-mobile">量子自编码网络学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'github-light';
+      var dark = 'github-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'CPLASF2049/steven2004.github.io');
+      s.setAttribute('issue-term', 'pathname');
+      
+      s.setAttribute('label', 'utterances');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br>© 2026 Steven 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/steven2004.github.io/js/events.js" ></script>
+<script  src="/steven2004.github.io/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/steven2004.github.io/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    function isExpandAllEnabled() {
+      return CONFIG.toc && CONFIG.toc.expand_all === true;
+    }
+    function expandAllToc() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .tocbot-is-collapsed').removeClass('tocbot-is-collapsed');
+    }
+    function updateTocToggle($li, $childList) {
+      var $toggle = $li.children('.toc-toggle');
+      if ($toggle.length === 0) { return; }
+      var collapsed = $childList.hasClass('tocbot-is-collapsed');
+      $toggle
+        .toggleClass('toc-toggle-collapsed', collapsed)
+        .toggleClass('toc-toggle-expanded', !collapsed);
+    }
+    function bindTocToggle() {
+      if (!isExpandAllEnabled()) { return; }
+      jQuery('#toc-body .toc-list-item').each(function() {
+        var $li = jQuery(this);
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) {
+          if ($li.children('.toc-toggle').length === 0) {
+            $li.prepend('<span class="toc-toggle toc-toggle-placeholder" aria-hidden="true">›</span>');
+          }
+          return;
+        }
+
+        if ($li.children('.toc-toggle').length === 0) {
+          $li.prepend('<span class="toc-toggle toc-toggle-expanded" aria-hidden="true">›</span>');
+        }
+        updateTocToggle($li, $childList);
+      });
+      jQuery('#toc-body').off('click.tocToggle').on('click.tocToggle', '.toc-toggle', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $li = jQuery(this).parent('.toc-list-item');
+        var $childList = $li.children('ol');
+        if ($childList.length === 0) { return; }
+        $childList.toggleClass('tocbot-is-collapsed');
+        updateTocToggle($li, $childList);
+      });
+      if (!window.__tocToggleObserver) {
+        window.__tocToggleObserver = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type !== 'attributes' || mutation.attributeName !== 'class') { return; }
+            var $list = jQuery(mutation.target);
+            var $li = $list.parent('.toc-list-item');
+            if ($li.length === 0) { return; }
+            updateTocToggle($li, $list);
+          });
+        });
+        jQuery('#toc-body ol').each(function() {
+          window.__tocToggleObserver.observe(this, { attributes: true });
+        });
+      }
+    }
+    var tocConfig = Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc);
+    if (isExpandAllEnabled()) {
+      tocConfig.collapseDepth = 6;
+    }
+    window.tocbot.init(tocConfig);
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+    expandAllToc();
+    bindTocToggle();
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+        expandAllToc();
+        bindTocToggle();
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/steven2004.github.io/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/steven2004.github.io/js/custom.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/steven2004.github.io/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
