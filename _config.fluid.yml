@@ -69,6 +69,7 @@ custom_css:
   - /css/editorial.css
   - /css/hero-writing.css
   - /css/inner-pages.css
+  - /css/mobile-stability.css
 custom_js:
   - /js/custom.js
   - /js/hero-writing.js

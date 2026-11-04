@@ -26,7 +26,7 @@ async function main() {
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   const origin = process.env.BLOG_PREVIEW_ORIGIN || `http://127.0.0.1:${server.address().port}`;
   browser = spawn('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', [
-    '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
+    '--headless=new', ...(process.env.BLOG_TOUCH_ONLY === '1' ? [] : ['--disable-gpu']), '--no-first-run', '--no-default-browser-check',
     '--disable-extensions', '--disable-background-networking', '--remote-debugging-port=0',
     `--user-data-dir=${profile}`, ...(process.env.BLOG_PREVIEW_PROXY ? [`--proxy-server=${process.env.BLOG_PREVIEW_PROXY}`] : []), 'about:blank'
   ], { stdio: 'inherit' });
@@ -109,6 +109,56 @@ async function main() {
     await call('Emulation.setScriptExecutionDisabled', {value:false});
     results.push({name,images});
     console.log(JSON.stringify({name,count,loaded:images.filter(i=>i.ok).length,failures:images.filter(i=>!i.ok)}));
+  }
+  if (process.env.BLOG_TOUCH_ONLY === '1') {
+    await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
+    await call('Emulation.setUserAgentOverride',{userAgent:'Mozilla/5.0 (Linux; Android 12; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36'});
+    await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+    await call('Network.setCacheDisabled',{cacheDisabled:true});
+    await call('Network.emulateNetworkConditions',{offline:false,latency:120,downloadThroughput:200000,uploadThroughput:100000,connectionType:'cellular4g'});
+    const checks=[];
+    for (const width of [390,320,430]) {
+      await call('Emulation.setDeviceMetricsOverride',{width,height:844,deviceScaleFactor:2,mobile:true});
+      await call('Page.navigate',{url:origin+prefix+'?mobile-check=stability'});
+      let ready=false;
+      for(let n=0;n<200;n++) {ready=await evaluate(`document.readyState==='complete' && !!document.querySelector('.hero-writing[data-typewriter-ready]')`);if(ready)break;await sleep(200);}
+      if(!ready) throw new Error('Touch page did not finish initialization');
+      const capabilities=await evaluate(`({touch:navigator.maxTouchPoints,coarse:matchMedia('(pointer:coarse)').matches,motion:matchMedia('(prefers-reduced-motion:reduce)').matches})`);
+      if(!capabilities.touch||!capabilities.coarse||capabilities.motion)throw new Error('Touch test not exercising real touch media settings');
+      // Scroll down and back up twice with normal animations enabled, never altering image attributes.
+      for(let cycle=0;cycle<2;cycle++) {
+        for(const direction of [-1,1]) {
+          for(let step=0;step<10;step++) {
+            const startY=direction<0?700:180;
+            await call('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:Math.floor(width/2),y:startY}]});
+            for(let move=1;move<=6;move++) {
+              await call('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:Math.floor(width/2),y:startY+direction*move*80}]});
+              await sleep(25);
+            }
+            await call('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+            await sleep(120);
+            const state=await evaluate(`(() => {const cards=[...document.querySelectorAll('.journal-card')];const styles=cards.map(c=>getComputedStyle(c)); return {y:scrollY,overflow:document.documentElement.scrollWidth>innerWidth+1,visible:styles.every(s=>s.opacity==='1'&&s.visibility==='visible'&&s.transform==='none'&&s.animationName==='none'&&s.backdropFilter==='none'&&s.transformStyle==='flat'),ordered:cards.every((c,i)=>!i||c.getBoundingClientRect().top>=cards[i-1].getBoundingClientRect().bottom-1)};})()`);
+            checks.push({width,cycle,direction,...state});
+          }
+        }
+      }
+      const imageCount=await evaluate('document.images.length');
+      for(let i=0;i<imageCount;i++) {
+        await evaluate(`document.images[${i}].scrollIntoView({block:'center'})`);
+        let image;
+        for(let n=0;n<80;n++) {image=await evaluate(`(() => {const i=document.images[${i}],r=i.getBoundingClientRect(),p=i.parentElement.getBoundingClientRect();return {loaded:i.complete&&i.naturalWidth>0&&i.currentSrc===i.src,height:r.height,ratio:p.width/p.height,bodyBelow:!i.closest('.journal-card')||i.closest('.journal-card').querySelector('.journal-card-body').getBoundingClientRect().top>=p.bottom-1};})()`);if(image.loaded)break;await sleep(200);}
+        if(!image.loaded||image.height<50||Math.abs(image.ratio-16/9)>.05||!image.bodyBelow)throw new Error('Touch image sizing/loading failure '+JSON.stringify(image));
+        if(i===imageCount-1){const shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});fs.writeFileSync(path.join(out,'touch-after-scroll-'+width+'.png'),Buffer.from(shot.data,'base64'));}
+      }
+      console.log(JSON.stringify({width,capabilities,scrollChecks:checks.filter(c=>c.width===width).length,images:imageCount}));
+    }
+    const failures=checks.filter(c=>c.overflow||!c.visible||!c.ordered);
+    for(const width of [390,320,430]) {const positions=checks.filter(c=>c.width===width).map(c=>c.y);if(Math.max(...positions)<2000||Math.min(...positions)>50) failures.push({width,reason:'Touch gestures did not traverse the page'});}
+    fs.writeFileSync(path.join(out,'touch-check.json'),JSON.stringify({checks,errors,failures},null,2));
+    await call('Browser.close');
+    if(failures.length||errors.length)throw new Error('Touch scroll checks failed');
+    console.log('Touch gestures, repeated scrolling, stable layout and actual image loading passed under throttling.');
+    return;
   }
   await auditImages('', 'all-home-images');
   await auditImages('2026/10/30/quantum-autoencoder-notes/', 'all-article-images');
