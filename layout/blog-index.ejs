@@ -1,0 +1,47 @@
+<%
+page.banner_img = theme.index.banner_img;
+page.banner_img_height = theme.index.banner_img_height;
+page.banner_mask_alpha = theme.index.banner_mask_alpha;
+%>
+<section class="journal-index" id="journal-posts" aria-labelledby="journal-posts-title">
+  <div class="journal-section-heading">
+    <div><p class="journal-eyebrow">THE JOURNAL</p><h2 id="journal-posts-title">最近在写</h2></div>
+    <a class="journal-text-link" href="<%= url_for('/archives/') %>">全部归档 <span aria-hidden="true">↗</span></a>
+  </div>
+  <nav class="journal-categories" aria-label="按分类浏览文章">
+    <span class="journal-category-current" aria-current="page">全部文章</span>
+    <% site.categories.sort('name', 1).each(function(category) { if (!category.length) return; %>
+      <a href="<%= url_for(category.path) %>"><%= category.name %><span><%= category.length %></span></a>
+    <% }); %>
+  </nav>
+  <div class="journal-grid">
+  <% page.posts.each(function(post) {
+    const postUrl = url_for(post.path);
+    const cover = post.index_img || theme.post.default_index_img;
+    const excerpt = post.description || post.excerpt || (theme.index.auto_excerpt.enable && !post.encrypt && post.content) || '';
+  %>
+    <article class="index-card journal-card">
+      <% if (cover) { %>
+      <a class="journal-card-cover" href="<%= postUrl %>" aria-label="阅读：<%= post.title %>">
+        <img src="<%= url_for(cover) %>" alt="" width="960" height="540" loading="lazy" decoding="async">
+        <% if (post.sticky > 0) { %><span class="journal-pin">置顶 · 从这里开始</span><% } %>
+      </a>
+      <% } %>
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <% if (post.categories.length) { const cat = post.categories.first(); %><a href="<%= url_for(cat.path) %>"><%= cat.name %></a><% } else { %><span>随笔</span><% } %>
+          <time datetime="<%= date(post.date, 'YYYY-MM-DD') %>"><%= date(post.date, 'YYYY.MM.DD') %></time>
+        </div>
+        <h3 class="index-header"><a href="<%= postUrl %>"><%= post.title %></a></h3>
+        <p class="journal-card-excerpt"><%= strip_html(excerpt).substring(0, 180).trim().replace(/\n/g, ' ') %></p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><% post.tags.limit(2).each(function(tag) { %><a href="<%= url_for(tag.path) %>"># <%= tag.name %></a><% }); %></div>
+          <a class="journal-read" href="<%= postUrl %>" aria-label="阅读全文：<%= post.title %>">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </article>
+  <% }); %>
+  </div>
+  <%- partial('_partials/paginator') %>
+  <div class="journal-closing"><span class="journal-dot" aria-hidden="true"></span><p>保持好奇，持续记录。</p><a href="<%= url_for('/atom.xml') %>">通过 RSS 订阅 <span aria-hidden="true">↗</span></a></div>
+</section>

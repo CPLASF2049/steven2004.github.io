@@ -28,7 +28,7 @@ code:
 # ---------- 首页副标题打字机效果 ----------
 fun_features:
   typing:
-    enable: true
+    enable: false
     typeSpeed: 70
     cursorChar: "_"
     loop: false
@@ -62,6 +62,7 @@ font:
 # 自定义样式与脚本（路径相对 source 目录）
 custom_css:
   - /css/custom.css
+  - /css/editorial.css
 custom_js:
   - /js/custom.js
 
@@ -93,7 +94,7 @@ search:
 # 首屏头图
 banner:
   random_img: false
-  parallax: true
+  parallax: false
   width_height_ratio: 1.0
 
 scroll_down_arrow:
@@ -161,7 +162,7 @@ index:
 # ---------- 文章页 ----------
 post:
   banner_img: /img/banner.jpg
-  banner_img_height: 70
+  banner_img_height: 50
   # 文章头图上的标题是白字，配图偏亮时 0.3 会看不清，这里加深一点保证可读
   banner_mask_alpha: 0.45
   # 首页卡片的默认封面图（文章可用 front-matter 里的 index_img / banner_img 单独指定）
