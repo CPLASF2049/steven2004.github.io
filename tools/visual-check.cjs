@@ -114,6 +114,45 @@ async function main() {
   await auditImages('2026/10/30/quantum-autoencoder-notes/', 'all-article-images');
   await auditImages('about/', 'about-image');
   await auditImages('', 'home-images-without-javascript', true);
+  if (process.env.BLOG_INNER_ONLY === '1') {
+    const routes = [
+      ['archives','archives/','.archive-journal'],
+      ['categories','categories/','.collection-grid'],
+      ['tags','tags/','.topic-cloud'],
+      ['category-detail','categories/项目实践/','.archive-journal'],
+      ['tag-detail','tags/Agent/','.archive-journal'],
+      ['archive-month','archives/2026/10/','.archive-journal'],
+      ['about','about/','.about-journal .about-section-nav a'],
+      ['reading','2026/11/04/fin-agent-version-log/','.reading-toolbar']
+    ];
+    const checks=[];
+    for (const [name,route,selector] of routes) {
+      for (const [width,height,dark,suffix] of [[1440,1000,false,'desktop'],[390,844,false,'mobile'],[1440,1000,true,'dark']]) {
+        await visit('inner-'+name+'-'+suffix,route,width,height,dark,'#board');
+        const result=await evaluate(`(() => { const section=document.querySelector(${JSON.stringify(selector)}); const localLinks=[...document.querySelectorAll('#board a[href^="#"]')].filter(a=>a.hash.length>1); return {structure:!!section,brokenAnchors:localLinks.filter(a=>!document.getElementById(decodeURIComponent(a.hash.slice(1)))).map(a=>a.hash),content:document.querySelector('#board').textContent.length}; })()`);
+        checks.push({name,suffix,...result});
+        if(name==='reading' && suffix==='mobile') {
+          await evaluate(`document.querySelector('.mobile-reading-toc summary').click()`);
+          const opened=await evaluate(`document.querySelector('.mobile-reading-toc').open`);
+          await evaluate(`document.querySelector('.mobile-reading-toc a').click()`);
+          const jumped=await evaluate(`!!location.hash && !!document.getElementById(decodeURIComponent(location.hash.slice(1)))`);
+          if(!opened||!jumped) throw new Error('Mobile TOC interaction failed');
+          console.log('Mobile TOC opens and navigates to its chapter.');
+        }
+      }
+    }
+    // Every generated site-local href should map to an existing output route.
+    const missing=[];
+    function walk(dir) { for(const entry of fs.readdirSync(dir,{withFileTypes:true})) { const f=path.join(dir,entry.name); if(entry.isDirectory())walk(f); else if(f.endsWith('.html')) {const html=fs.readFileSync(f,'utf8'); for(const m of html.matchAll(/href="([^"#]*)"/g)) {if(!m[1].startsWith(prefix))continue; const p=decodeURIComponent(m[1].slice(prefix.length).split('?')[0]); if(!fs.existsSync(path.join(root,'public',p)))missing.push({file:f,href:m[1]});}} } }
+    walk(path.join(root,'public'));
+    const report={checks,results,errors:[...new Set(errors)],missing};
+    fs.writeFileSync(path.join(out,'inner-check.json'),JSON.stringify(report,null,2));
+    console.log(JSON.stringify({checks,errors:report.errors,missing},null,2));
+    await call('Browser.close');
+    if(checks.some(c=>!c.structure||c.brokenAnchors.length||c.content<100)||errors.length||missing.length||results.some(r=>(r.width&&r.scrollWidth>r.width+1)||r.images?.some(i=>!i.ok))) throw new Error('Inner page checks failed.');
+    console.log('Inner page structure, links, mobile TOC, layout and images passed.');
+    return;
+  }
   if (process.env.BLOG_HERO_ONLY === '1') {
     await visit('hero-desktop', '', 1440, 1000);
     await visit('hero-mobile', '', 390, 844);

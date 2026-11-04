@@ -1,0 +1,17 @@
+<%
+page.layout = 'tags';
+page.title = theme.tag.title || __('tag.title');
+page.subtitle = theme.tag.subtitle || __('tag.subtitle');
+page.banner_img = theme.tag.banner_img;
+page.banner_img_height = theme.tag.banner_img_height;
+page.banner_mask_alpha = theme.tag.banner_mask_alpha;
+const tags = site.tags.sort('name', 1).filter(t => t.length);
+%>
+<section class="inner-section">
+  <nav class="inner-breadcrumb" aria-label="当前位置"><a href="<%= url_for('/') %>">首页</a><span aria-hidden="true">/</span><span aria-current="page">标签</span></nav>
+  <header class="inner-heading"><div><p class="inner-eyebrow">IDEAS & CONNECTIONS</p><h1>从一个关键词出发。</h1><p>让零散的知识，连接成自己的地图。</p></div><span class="inner-count"><strong><%= tags.length %></strong> 个标签</span></header>
+  <nav class="inner-tabs" aria-label="浏览方式"><a href="<%= url_for('/archives/') %>">按时间</a><a href="<%= url_for('/categories/') %>">按分类</a><a class="is-current" aria-current="page" href="<%= url_for('/tags/') %>">按标签</a></nav>
+  <div class="topic-feature"><span class="inner-eyebrow">常写的主题</span><div class="topic-feature-links"><% tags.sort('length', -1).limit(3).each(function(tag) { %><a href="<%= url_for(tag.path) %>"># <%= tag.name %><small><%= tag.length %> 篇</small><span aria-hidden="true">↗</span></a><% }); %></div></div>
+  <h2 class="inner-subheading">全部标签</h2>
+  <div class="topic-cloud"><% tags.sort('name',1).each(function(tag) { %><a href="<%= url_for(tag.path) %>"><span class="topic-hash" aria-hidden="true">#</span><span><%= tag.name %></span><span class="topic-count"><%= tag.length %><span class="sr-only"> 篇文章</span></span></a><% }); %></div>
+</section>

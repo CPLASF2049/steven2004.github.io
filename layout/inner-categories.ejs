@@ -1,0 +1,25 @@
+<%
+page.layout = 'categories';
+page.title = theme.category.title || __('category.title');
+page.subtitle = theme.category.subtitle || __('category.subtitle');
+page.banner_img = theme.category.banner_img;
+page.banner_img_height = theme.category.banner_img_height;
+page.banner_mask_alpha = theme.category.banner_mask_alpha;
+const cats = site.categories.sort('name', 1).filter(c => c.length);
+const descriptions = {'学习笔记':'从概念到推导，记录每一次理解。','项目实践':'从想法到实现，留下真实的开发过程。','生活':'认真生活，也记下值得珍藏的瞬间。','随笔':'不设边界，写下此刻的思考。'};
+%>
+<section class="inner-section">
+  <nav class="inner-breadcrumb" aria-label="当前位置"><a href="<%= url_for('/') %>">首页</a><span aria-hidden="true">/</span><span aria-current="page">分类</span></nav>
+  <header class="inner-heading"><div><p class="inner-eyebrow">COLLECTIONS</p><h1>按主题，慢慢读。</h1><p>学习、实践与生活，各有一处存放。</p></div><span class="inner-count"><strong><%= cats.length %></strong> 个分类</span></header>
+  <nav class="inner-tabs" aria-label="浏览方式"><a href="<%= url_for('/archives/') %>">按时间</a><a class="is-current" href="<%= url_for('/categories/') %>" aria-current="page">按分类</a><a href="<%= url_for('/tags/') %>">按标签</a></nav>
+  <div class="collection-grid">
+    <% let i = 0; cats.each(function(cat) { const recent = cat.posts.sort('date', -1).first(); %>
+    <article class="collection-card">
+      <div class="collection-top"><span class="collection-number"><%= String(++i).padStart(2,'0') %></span><span><%= cat.length %> 篇文章</span></div>
+      <h2><a href="<%= url_for(cat.path) %>"><%= cat.name %><span aria-hidden="true">↗</span></a></h2>
+      <p><%= descriptions[cat.name] || '关于这个主题的思考与记录。' %></p>
+      <% if (recent) { %><div class="collection-recent"><span>最近更新 · <%= date(recent.date,'YYYY.MM.DD') %></span><a href="<%= url_for(recent.path) %>"><%= recent.title %></a></div><% } %>
+    </article>
+    <% }); %>
+  </div>
+</section>

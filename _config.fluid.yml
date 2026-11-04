@@ -68,6 +68,7 @@ custom_css:
   - /css/custom.css
   - /css/editorial.css
   - /css/hero-writing.css
+  - /css/inner-pages.css
 custom_js:
   - /js/custom.js
   - /js/hero-writing.js

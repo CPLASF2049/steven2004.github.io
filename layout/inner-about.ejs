@@ -1,0 +1,17 @@
+<%
+page.layout = 'about';
+page.title = theme.about.title || __('about.title');
+page.subtitle = theme.about.subtitle || __('about.subtitle');
+page.banner_img = page.banner_img || theme.about.banner_img;
+page.banner_img_height = page.banner_img_height || theme.about.banner_img_height;
+page.banner_mask_alpha = page.banner_mask_alpha || theme.about.banner_mask_alpha;
+%>
+<section class="inner-section about-journal">
+  <nav class="inner-breadcrumb" aria-label="当前位置"><a href="<%= url_for('/') %>">首页</a><span aria-hidden="true">/</span><span aria-current="page">关于</span></nav>
+  <header class="profile-heading"><p class="inner-eyebrow">BEHIND THE JOURNAL</p><h1>你好，我是 <%= theme.about.name %>。</h1><p><%= theme.about.introduce || theme.about.intro %></p>
+    <div class="profile-links"><% (theme.about.icons || []).forEach(function(item) { if (!item.link || item.qrcode) return; %><a href="<%= url_for(item.link) %>" <%- /^https?:/.test(item.link) ? 'target="_blank" rel="noopener noreferrer"' : '' %>><i class="<%= item.class %>" aria-hidden="true"></i><%= item.tip || '链接' %><span aria-hidden="true">↗</span></a><% }); %></div>
+  </header>
+  <div class="profile-stats"><a href="<%= url_for('/archives/') %>"><strong><%= site.posts.length %></strong><span>篇文字与记录</span></a><a href="<%= url_for('/categories/') %>"><strong><%= site.categories.filter(c=>c.length).length %></strong><span>个写作方向</span></a><a href="<%= url_for('/tags/') %>"><strong><%= site.tags.filter(t=>t.length).length %></strong><span>个知识关键词</span></a></div>
+  <div class="about-layout"><aside class="about-section-nav" aria-label="关于页目录"><p class="inner-eyebrow">在这一页</p><%- toc(page.content, {class:'about-outline',list_number:false,max_depth:2}) %></aside><article class="about-content page-content"><div class="markdown-body"><%- page.content %></div></article></div>
+</section>
+<%- partial('_partials/markdown-plugins') %>

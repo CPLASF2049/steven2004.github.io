@@ -5,10 +5,20 @@ const path = require('path');
 
 hexo.extend.filter.register('theme_inject', function(injects) {
   injects.header.file('default', 'layout/blog-header.ejs');
+  injects.postMarkdownBegin.file('reading-tools', 'layout/inner-reading.ejs');
 });
 
 hexo.on('generateBefore', function() {
   const layout = fs.readFileSync(path.join(hexo.theme_dir, 'layout/layout.ejs'), 'utf8');
   hexo.theme.setView('layout.ejs', layout.replace('<body>', '<body class="<%= is_home() ? \'page-home\' : is_post() ? \'page-post\' : \'page-list\' %>">'));
   hexo.theme.setView('index.ejs', fs.readFileSync(path.join(hexo.base_dir, 'layout/blog-index.ejs'), 'utf8'));
+  const views = {
+    '_partials/archive-list.ejs': 'inner-archive.ejs',
+    'categories.ejs': 'inner-categories.ejs',
+    'tags.ejs': 'inner-tags.ejs',
+    'about.ejs': 'inner-about.ejs'
+  };
+  for (const [view, file] of Object.entries(views)) {
+    hexo.theme.setView(view, fs.readFileSync(path.join(hexo.base_dir, 'layout', file), 'utf8'));
+  }
 });
