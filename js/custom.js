@@ -27,7 +27,7 @@
   var TILT_SELECTOR = '.index-card';
   var GLOW_SELECTOR = '.index-card, .list-group-item';
   var REVEAL_SELECTOR = '.index-card, .list-group-item';
-  var HEART_COUNT = 1;                                 // 每次点击冒出几颗心
+  var HEART_COUNT = 3;                                 // 每次点击冒出几颗心
 
   // 站点上线时间，用于页脚与控制台的运行时间统计，改成你自己的
   var LAUNCH = new Date('2026-02-25T00:00:00+08:00');
@@ -126,9 +126,9 @@
 
   function initClickHearts() {
     document.addEventListener('click', function (e) {
-      // 只在桌面空白处保留一点趣味，不遮挡阅读和控件操作。
-      if (!finePointer || !e.target || !e.target.closest) return;
-      if (e.target.closest('a, button, input, textarea, select, .markdown-body, [role="button"]')) return;
+      // 恢复原来的点击爱心：输入框除外，正文和触屏点击也保留。
+      var tag = e.target && e.target.tagName ? e.target.tagName.toLowerCase() : '';
+      if (tag === 'input' || tag === 'textarea') return;
       spawnHearts(e.clientX, e.clientY);
     });
   }
