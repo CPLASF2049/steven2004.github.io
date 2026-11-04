@@ -2,7 +2,23 @@
 page.banner_img = theme.index.banner_img;
 page.banner_img_height = theme.index.banner_img_height;
 page.banner_mask_alpha = theme.index.banner_mask_alpha;
+const latest = site.posts.filter(p => p.published !== false && !p.hide && !p.encrypt).sort('date', -1).first();
 %>
+<h1 class="sr-only"><%= config.title %></h1>
+<% if (latest) { %>
+<section class="journal-latest" id="latest-post" aria-labelledby="latest-post-title">
+  <div class="journal-section-heading"><h2 id="latest-post-title">最新文章</h2><span class="journal-eyebrow">LATEST POST</span></div>
+  <a class="journal-feature" href="<%= url_for(latest.path) %>" aria-label="阅读最新文章：<%= latest.title %>">
+    <div class="journal-feature-image"><img src="<%= url_for(latest.index_img || theme.post.default_index_img) %>" alt="" width="960" height="540" loading="lazy"></div>
+    <div class="journal-feature-copy">
+      <div class="journal-feature-meta"><span><%= latest.categories.length ? latest.categories.first().name : '随笔' %></span><time datetime="<%= date(latest.date, 'YYYY-MM-DD') %>"><%= date(latest.date, 'YYYY.MM.DD') %></time></div>
+      <h3><%= latest.title %></h3>
+      <p class="journal-card-excerpt"><%= strip_html(latest.description || latest.excerpt || '').substring(0, 180) %></p>
+      <span class="journal-feature-read">读这篇文章 <span aria-hidden="true">↗</span></span>
+    </div>
+  </a>
+</section>
+<% } %>
 <section class="journal-index" id="journal-posts" aria-labelledby="journal-posts-title">
   <div class="journal-section-heading">
     <div><p class="journal-eyebrow">THE JOURNAL</p><h2 id="journal-posts-title">最近在写</h2></div>

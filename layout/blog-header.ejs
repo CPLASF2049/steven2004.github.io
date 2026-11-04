@@ -1,40 +1,18 @@
 <%
 const home = is_home();
 const height = parseFloat(page.banner_img_height || theme.index.banner_img_height);
-const publishedPosts = site.posts.filter(p => p.published !== false && !p.hide && !p.encrypt);
-const latest = publishedPosts.sort('date', -1).first();
 %>
 <a class="skip-link" href="#board">跳到正文</a>
 <div class="header-inner <%= home ? 'journal-header' : '' %>" style="height: <%= height %>vh;">
   <%- partial('_partials/header/navigation') %>
   <% if (home) { %>
-  <section id="journal-banner" class="journal-hero" aria-labelledby="journal-title">
-    <div class="journal-hero-inner">
-      <div class="journal-intro">
-        <p class="journal-eyebrow"><span class="journal-dot" aria-hidden="true"></span> STEVEN / 学习与创造</p>
-        <h1 id="journal-title">把好奇心，<br>写成<span>下一步。</span></h1>
-        <p class="journal-description">你好，我是 Steven。<br>在这里记录计算机学习、项目实践，<br class="desktop-break">以及认真生活的点滴。</p>
-        <div class="journal-actions">
-          <a class="journal-button" href="#journal-posts">开始阅读 <span aria-hidden="true">↘</span></a>
-          <a class="journal-text-link" href="<%= url_for('/about/') %>">关于我 <span aria-hidden="true">↗</span></a>
-        </div>
-        <div class="journal-topics" aria-label="写作方向"><span>AI / Agent</span><span>量子计算</span><span>日常与随笔</span></div>
+  <div id="banner" class="banner home-image-banner" role="img" aria-label="博客首页头图" style="background: url('<%= url_for(theme.index.banner_img) %>') no-repeat center center; background-size: cover;">
+    <div class="full-bg-img">
+      <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.12)">
+        <a class="scroll-down-bar" href="#board" aria-label="向下浏览文章"><i class="iconfont icon-arrowdown" aria-hidden="true"></i></a>
       </div>
-      <% if (latest) { %>
-      <a class="journal-feature" href="<%= url_for(latest.path) %>" aria-label="阅读最新文章：<%= latest.title %>">
-        <div class="journal-feature-image">
-          <img src="<%= url_for(latest.index_img || theme.post.default_index_img) %>" alt="" width="960" height="540" fetchpriority="high">
-          <span class="journal-feature-label">最新文章</span>
-        </div>
-        <div class="journal-feature-copy">
-          <div class="journal-feature-meta"><span><%= latest.categories.length ? latest.categories.first().name : '随笔' %></span><time datetime="<%= date(latest.date, 'YYYY-MM-DD') %>"><%= date(latest.date, 'YYYY.MM.DD') %></time></div>
-          <h2><%= latest.title %></h2>
-          <span class="journal-feature-read">读这篇文章 <span aria-hidden="true">↗</span></span>
-        </div>
-      </a>
-      <% } %>
     </div>
-  </section>
+  </div>
   <% } else { %>
     <%- partial('_partials/header/banner') %>
   <% } %>

@@ -74,12 +74,15 @@ async function main() {
     if (scrollSelector) await evaluate(`document.querySelector(${JSON.stringify(scrollSelector)})?.scrollIntoView(); window.scrollBy(0, -100);`);
     await sleep(150);
     const info = await evaluate(`(() => ({title: document.title, width: innerWidth, scrollWidth: document.documentElement.scrollWidth, css: [...document.styleSheets].filter(s => s.href).map(s => {try{return {href:s.href, rules:s.cssRules.length}}catch{return {href:s.href,crossOrigin:true}}}), images: [...document.images].filter(i => i.getBoundingClientRect().top < innerHeight && i.getBoundingClientRect().bottom > 0).map(i=>({src:i.src,ok:i.complete&&i.naturalWidth>0})), headings: [...document.querySelectorAll('h1')].map(e=>e.textContent), cards: document.querySelectorAll('.journal-card').length, bodyColor: getComputedStyle(document.body).backgroundColor, overflow: [...document.querySelectorAll('body *')].filter(e => {const r=e.getBoundingClientRect();return r.width>0 && r.right>innerWidth+2 && getComputedStyle(e).position!=='fixed' && !e.closest('pre,table,.katex-display,.modal')}).slice(0,8).map(e=>e.tagName+'.'+e.className) }))()`);
+    const design = await evaluate(`(() => { const banner=document.querySelector('.header-inner'); const latest=document.querySelector('.journal-latest'); const cards=[...document.querySelectorAll('.journal-card')]; const toc=document.querySelector('#toc-body > ol > li > a'); const glass=document.querySelector('.journal-feature') || document.querySelector('#board'); return {bannerHeight:banner?.getBoundingClientRect().height, latestBelowBanner:!latest || latest.getBoundingClientRect().top >= banner.getBoundingClientRect().bottom - 2, singleColumn:cards.every((c,i)=>!i || c.getBoundingClientRect().top >= cards[i-1].getBoundingClientRect().bottom - 2), tocFont:toc ? getComputedStyle(toc).fontSize : null, glassBlur:glass ? getComputedStyle(glass).backdropFilter : null}; })()`);
+    Object.assign(info, design);
     const image = await call('Page.captureScreenshot', { format:'png', captureBeyondViewport:false });
     fs.writeFileSync(path.join(out, name + '.png'), Buffer.from(image.data, 'base64'));
     results.push({ name, ...info });
     console.log(JSON.stringify({name,width:info.width,scrollWidth:info.scrollWidth,cards:info.cards,images:info.images.length,overflow:info.overflow}));
   }
   await visit('home-desktop', '', 1440, 1000);
+  await visit('home-latest', '', 1440, 1000, false, '#latest-post');
   await visit('home-cards', '', 1440, 1000, false, '#journal-posts');
   await visit('home-mobile', '', 390, 844);
   const menu = await evaluate(`(() => { const t=document.querySelector('.navbar-toggler'); t?.click(); return !!t; })()`);
@@ -88,7 +91,8 @@ async function main() {
   results.push({ name:'mobile-menu', exists:menu, opens:menuVisible });
   await visit('home-small-mobile', '', 320, 740);
   await visit('home-tablet', '', 768, 1024);
-  await visit('home-dark', '', 1440, 1000, true);
+  await visit('home-dark', '', 1440, 1000, true, '#latest-post');
+  await visit('home-mobile-cards', '', 390, 844, false, '#journal-posts');
   await visit('article-desktop', '2026/11/04/fin-agent-version-log/', 1440, 1000);
   const search = await evaluate(`(() => {const b=document.querySelector('[data-target="#modalSearch"]');b?.click();return !!b})()`);
   await sleep(500);
@@ -103,13 +107,20 @@ async function main() {
   await visit('article-dark', '2026/11/04/fin-agent-version-log/', 1440, 1000, true, '#board');
   await visit('math-mobile', '2026/10/30/quantum-autoencoder-notes/', 390, 844, false, '.katex-display');
   await visit('archive-desktop', 'archives/', 1440, 1000);
+  await call('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+  await call('Page.navigate', {url: origin + prefix});
+  await sleep(2500);
+  const hearts = await evaluate(`(() => { document.body.dispatchEvent(new MouseEvent('click', {bubbles:true,clientX:300,clientY:300})); return document.querySelectorAll('.fx-heart').length; })()`);
+  await sleep(2000);
+  const heartsAfter = await evaluate(`document.querySelectorAll('.fx-heart').length`);
+  results.push({name:'hearts', count:hearts, cleaned:heartsAfter===0});
   // Check all homepage same-site links resolve to generated files.
   const home = fs.readFileSync(path.join(root,'public','index.html'),'utf8');
   const missingLinks = [...home.matchAll(/href="(\/steven2004\.github\.io\/[^"#]*)"/g)].map(m=>decodeURIComponent(m[1].slice(prefix.length))).filter(p=> !fs.existsSync(path.join(root,'public',p.split('?')[0])));
   const report = {results, errors:[...new Set(errors)], failedRequests:[...new Set(failedRequests)], missingLinks:[...new Set(missingLinks)]};
   fs.writeFileSync(path.join(out,'visual-check.json'), JSON.stringify(report,null,2));
   console.log(JSON.stringify({errors:report.errors, missingLinks:report.missingLinks, interactions:results.filter(x=>x.name==='search'||x.name==='mobile-menu')},null,2));
-  const failures = results.filter(r => (r.width && r.scrollWidth > r.width + 1) || (r.images && r.images.some(i => !i.ok)) || (r.name === 'mobile-menu' && !r.opens) || (r.name === 'search' && (!r.opens || !r.results.includes('金融Fin-agent'))));
+  const failures = results.filter(r => (r.latestBelowBanner === false) || (r.singleColumn === false) || (r.name === 'home-desktop' && r.bannerHeight < 990) || (r.tocFont && parseFloat(r.tocFont) < 18) || (r.name === 'hearts' && (r.count !== 3 || !r.cleaned)) || (r.width && r.scrollWidth > r.width + 1) || (r.images && r.images.some(i => !i.ok)) || (r.name === 'mobile-menu' && !r.opens) || (r.name === 'search' && (!r.opens || !r.results.includes('金融Fin-agent'))));
   await call('Browser.close');
   if (report.errors.length || report.missingLinks.length || failures.length) throw new Error('Browser validation failed: ' + JSON.stringify(failures.map(r => r.name)));
   console.log('Browser checks passed.');
