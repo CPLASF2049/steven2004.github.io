@@ -1,0 +1,43 @@
+/* Title and poetry float above the full-height cover; all content has static fallback. */
+.home-image-banner .mask { background-image: linear-gradient(180deg, rgba(10,24,28,.12), rgba(10,24,28,.35) 45%, rgba(10,24,28,.18)); }
+.hero-writing { width: min(880px, calc(100% - 40px)); margin: 50px auto 0; color: #fff; text-align: center; text-shadow: 0 2px 18px rgba(0,0,0,.5); }
+.hero-kicker { font-size: .85rem; letter-spacing: .4em; margin: 0 0 14px; font-weight: 500; }
+.hero-title { font-size: clamp(2.35rem, 5.4vw, 4.9rem); font-weight: 750; line-height: 1.25; letter-spacing: -.035em; min-height: 1.3em; }
+.hero-tagline { font-size: clamp(.85rem, 1.4vw, 1.05rem); letter-spacing: .12em; line-height: 1.8; margin: 18px 0 28px; }
+.hero-cursor { margin-left: .12em; font-weight: 300; animation: hero-blink 1s step-end infinite; }
+.title-complete .hero-title-cursor { visibility: hidden; }
+.hero-poetry { padding: 24px 28px 18px; border-radius: 18px; border: 1px solid rgba(255,255,255,.34); background: rgba(12,28,34,.5); box-shadow: inset 0 1px 0 rgba(255,255,255,.15), 0 12px 40px rgba(0,0,0,.12); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hero-poetry { background: rgba(16,30,36,.36); -webkit-backdrop-filter: blur(16px) saturate(130%); backdrop-filter: blur(16px) saturate(130%); }
+}
+.hero-poetry-label { font-size: .75rem; letter-spacing: .24em; color: #fff; }
+.hero-verse { font-family: "STKaiti", "KaiTi", "Noto Serif CJK SC", serif; font-size: clamp(1.2rem, 2.5vw, 1.85rem); line-height: 1.85; min-height: 1.85em; margin: 16px 0 8px; text-wrap: balance; }
+.hero-poem-source { font-size: .85rem; min-height: 1.8em; line-height: 1.8; margin: 0; }
+.hero-writing[data-typewriter-ready] .hero-poem-source { opacity: 0; transition: opacity .3s; }
+.hero-writing.verse-complete .hero-poem-source { opacity: 1; }
+.hero-poem-controls { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: .75rem; text-shadow: none; }
+.hero-poem-controls[hidden] { display: none; }
+.hero-poem-controls > span { font-variant-numeric: tabular-nums; letter-spacing: .1em; }
+.hero-poem-controls button { background: rgba(0,0,0,.14); color: #fff; border: 1px solid rgba(255,255,255,.42); border-radius: 20px; padding: 7px 15px; min-height: 36px; cursor: pointer; transition: background .2s; }
+.hero-poem-controls button:hover { background: rgba(255,255,255,.22); }
+.hero-poem-controls button:focus-visible { outline: 2px solid white; outline-offset: 4px; }
+.is-paused .hero-cursor { animation: none; opacity: 0; }
+@keyframes hero-blink { 50% { opacity: 0; } }
+@media (max-width: 767px) {
+  .hero-writing { width: calc(100% - 36px); margin-top: 24px; }
+  .hero-kicker { font-size: .72rem; letter-spacing: .24em; }
+  .hero-title { font-size: clamp(2rem, 9vw, 3.2rem); }
+  .hero-tagline { margin: 12px 0 22px; letter-spacing: .035em; }
+  .hero-poetry { padding: 20px 16px 16px; }
+  .hero-verse { min-height: 3.7em; font-size: 1.25rem; }
+  .hero-poem-source { min-height: 3.6em; font-size: .78rem; }
+}
+@media (max-height: 600px) and (min-width: 768px) {
+  .hero-writing { margin-top: 55px; }
+  .hero-title { font-size: 2.6rem; }
+  .hero-kicker { margin-bottom: 5px; }
+  .hero-tagline { margin: 6px 0 12px; }
+  .hero-poetry { padding: 12px 22px; }
+  .hero-verse { margin: 6px 0; font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-cursor { animation: none; display: none; } }
