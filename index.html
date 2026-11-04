@@ -62,13 +62,14 @@
 
   
 <link rel="stylesheet" href="/steven2004.github.io/css/custom.css">
+<link rel="stylesheet" href="/steven2004.github.io/css/editorial.css">
 
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"cplasf2049.github.io","root":"/steven2004.github.io/","version":"1.9.9","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h2,h3,h4","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":false,"placement":"right","headingSelector":"h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/steven2004.github.io/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"cplasf2049.github.io","root":"/steven2004.github.io/","version":"1.9.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h2,h3,h4","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"expand_all":false,"placement":"right","headingSelector":"h2,h3,h4","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"openkounter":{"server_url":"https://open-kounter.mintimate.cn","path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/steven2004.github.io/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -85,13 +86,13 @@
 </head>
 
 
-<body>
+<body class="page-home">
   
 
   <header>
     
-
-<div class="header-inner" style="height: 100vh;">
+<a class="skip-link" href="#board">跳到正文</a>
+<div class="header-inner journal-header" style="height: 100vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/steven2004.github.io/">
@@ -292,32 +293,34 @@
 </div>
 
   
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/steven2004.github.io/img/banner.jpg') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="路漫漫其修远兮，吾将上下而求索。,博观而约取，厚积而薄发。,纸上得来终觉浅，绝知此事要躬行。,千淘万漉虽辛苦，吹尽狂沙始到金。,长风破浪会有时，直挂云帆济沧海。,会当凌绝顶，一览众山小。,山重水复疑无路，柳暗花明又一村。,宝剑锋从磨砺出，梅花香自苦寒来。,书山有路勤为径，学海无涯苦作舟。,问渠那得清如许？为有源头活水来。,不积跬步，无以至千里；不积小流，无以成江海。,锲而不舍，金石可镂。,十年磨一剑，霜刃未曾试。,沉舟侧畔千帆过，病树前头万木春。,咬定青山不放松，立根原在破岩中。,三更灯火五更鸡，正是男儿读书时。"></span>
-          
+  <section id="journal-banner" class="journal-hero" aria-labelledby="journal-title">
+    <div class="journal-hero-inner">
+      <div class="journal-intro">
+        <p class="journal-eyebrow"><span class="journal-dot" aria-hidden="true"></span> STEVEN / 学习与创造</p>
+        <h1 id="journal-title">把好奇心，<br>写成<span>下一步。</span></h1>
+        <p class="journal-description">你好，我是 Steven。<br>在这里记录计算机学习、项目实践，<br class="desktop-break">以及认真生活的点滴。</p>
+        <div class="journal-actions">
+          <a class="journal-button" href="#journal-posts">开始阅读 <span aria-hidden="true">↘</span></a>
+          <a class="journal-text-link" href="/steven2004.github.io/about/">关于我 <span aria-hidden="true">↗</span></a>
         </div>
-
-        
+        <div class="journal-topics" aria-label="写作方向"><span>AI / Agent</span><span>量子计算</span><span>日常与随笔</span></div>
       </div>
-
       
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
+      <a class="journal-feature" href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" aria-label="阅读最新文章：金融Fin-agent项目开发版本迭代实录">
+        <div class="journal-feature-image">
+          <img src="/steven2004.github.io/img/cover-agent.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" fetchpriority="high">
+          <span class="journal-feature-label">最新文章</span>
         </div>
+        <div class="journal-feature-copy">
+          <div class="journal-feature-meta"><span>项目实践</span><time datetime="2026-11-04">2026.11.04</time></div>
+          <h2>金融Fin-agent项目开发版本迭代实录</h2>
+          <span class="journal-feature-read">读这篇文章 <span aria-hidden="true">↗</span></span>
+        </div>
+      </a>
       
     </div>
-  </div>
-</div>
-
-
-
+  </section>
+  
 </div>
 
   </header>
@@ -326,383 +329,141 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          style="margin-top: 0">
+          >
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
-
-<h1 style="display: none">Steven&#39;s Blog</h1>
-
-  <div class="row mx-auto index-card">
+<section class="journal-index" id="journal-posts" aria-labelledby="journal-posts-title">
+  <div class="journal-section-heading">
+    <div><p class="journal-eyebrow">THE JOURNAL</p><h2 id="journal-posts-title">最近在写</h2></div>
+    <a class="journal-text-link" href="/steven2004.github.io/archives/">全部归档 <span aria-hidden="true">↗</span></a>
+  </div>
+  <nav class="journal-categories" aria-label="按分类浏览文章">
+    <span class="journal-category-current" aria-current="page">全部文章</span>
     
+      <a href="/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记<span>2</span></a>
     
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/steven2004.github.io/2026/02/25/hello-world/" target="_self">
-          <img src="/steven2004.github.io/img/cover-hello.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="你好，世界">
-        </a>
-      </div>
+      <a href="/steven2004.github.io/categories/%E7%94%9F%E6%B4%BB/">生活<span>1</span></a>
     
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-          <i class="index-pin iconfont icon-top" title="Pin on top"></i>
-        
-        <a href="/steven2004.github.io/2026/02/25/hello-world/" target="_self">
-          你好，世界
-        </a>
-      </h2>
-
+      <a href="/steven2004.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔<span>1</span></a>
+    
+      <a href="/steven2004.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/">项目实践<span>1</span></a>
+    
+  </nav>
+  <div class="journal-grid">
+  
+    <article class="index-card journal-card">
       
-      <a class="index-excerpt " href="/steven2004.github.io/2026/02/25/hello-world/" target="_self">
-        <div>
-          博客开张。说说为什么要写博客，以及这里以后会放些什么。
-        </div>
+      <a class="journal-card-cover" href="/steven2004.github.io/2026/02/25/hello-world/" aria-label="阅读：你好，世界">
+        <img src="/steven2004.github.io/img/cover-hello.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" loading="lazy" decoding="async">
+        <span class="journal-pin">置顶 · 从这里开始</span>
       </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-02-25 10:00" pubdate>
-              2026-02-25
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/steven2004.github.io/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/steven2004.github.io/tags/%E5%8D%9A%E5%AE%A2/">#博客</a>
-            
-              <a href="/steven2004.github.io/tags/%E8%AE%B0%E5%BD%95/">#记录</a>
-            
-          </div>
-        
+      
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <a href="/steven2004.github.io/categories/%E9%9A%8F%E7%AC%94/">随笔</a>
+          <time datetime="2026-02-25">2026.02.25</time>
+        </div>
+        <h3 class="index-header"><a href="/steven2004.github.io/2026/02/25/hello-world/">你好，世界</a></h3>
+        <p class="journal-card-excerpt">博客开张。说说为什么要写博客，以及这里以后会放些什么。</p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><a href="/steven2004.github.io/tags/%E5%8D%9A%E5%AE%A2/"># 博客</a><a href="/steven2004.github.io/tags/%E8%AE%B0%E5%BD%95/"># 记录</a></div>
+          <a class="journal-read" href="/steven2004.github.io/2026/02/25/hello-world/" aria-label="阅读全文：你好，世界">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" target="_self">
-          <img src="/steven2004.github.io/img/cover-agent.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="金融Fin-agent项目开发版本迭代实录">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" target="_self">
-          金融Fin-agent项目开发版本迭代实录
-        </a>
-      </h2>
-
+  
+    <article class="index-card journal-card">
       
-      <a class="index-excerpt " href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" target="_self">
-        <div>
-          从一句需求到能跑的 A 股投研 Agent 的完整施工记录：MCP 工具面、Supervisor 编排、降级说实话、审查与事实对账、预算穿透、断线重连，以及那些被推翻的设计。
-        </div>
+      <a class="journal-card-cover" href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" aria-label="阅读：金融Fin-agent项目开发版本迭代实录">
+        <img src="/steven2004.github.io/img/cover-agent.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" loading="lazy" decoding="async">
+        
       </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-11-04 03:40" pubdate>
-              2026-11-04
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/steven2004.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/" class="category-chain-item">项目实践</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/steven2004.github.io/tags/Agent/">#Agent</a>
-            
-              <a href="/steven2004.github.io/tags/MCP/">#MCP</a>
-            
-              <a href="/steven2004.github.io/tags/LangGraph/">#LangGraph</a>
-            
-              <a href="/steven2004.github.io/tags/Vibe-Coding/">#Vibe Coding</a>
-            
-              <a href="/steven2004.github.io/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">#大模型</a>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%8C%96%E6%8A%95%E7%A0%94/">#量化投研</a>
-            
-          </div>
-        
+      
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <a href="/steven2004.github.io/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E8%B7%B5/">项目实践</a>
+          <time datetime="2026-11-04">2026.11.04</time>
+        </div>
+        <h3 class="index-header"><a href="/steven2004.github.io/2026/11/04/fin-agent-version-log/">金融Fin-agent项目开发版本迭代实录</a></h3>
+        <p class="journal-card-excerpt">从一句需求到能跑的 A 股投研 Agent 的完整施工记录：MCP 工具面、Supervisor 编排、降级说实话、审查与事实对账、预算穿透、断线重连，以及那些被推翻的设计。</p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><a href="/steven2004.github.io/tags/Agent/"># Agent</a><a href="/steven2004.github.io/tags/MCP/"># MCP</a></div>
+          <a class="journal-read" href="/steven2004.github.io/2026/11/04/fin-agent-version-log/" aria-label="阅读全文：金融Fin-agent项目开发版本迭代实录">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" target="_self">
-          <img src="/steven2004.github.io/img/cover-quantum.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="量子自编码网络学习笔记">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" target="_self">
-          量子自编码网络学习笔记
-        </a>
-      </h2>
-
+  
+    <article class="index-card journal-card">
       
-      <a class="index-excerpt " href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" target="_self">
-        <div>
-          从经典自编码器（AE）到变分自编码器（VAE），再到量子自编码器（QAE）的完整脉络：偏迹压缩、参数化酉线路 U(θ)/V(φ)、保真度损失 1−F、参数移位法则与贫瘠高原。
-        </div>
+      <a class="journal-card-cover" href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" aria-label="阅读：量子自编码网络学习笔记">
+        <img src="/steven2004.github.io/img/cover-quantum.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" loading="lazy" decoding="async">
+        
       </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-10-30 18:30" pubdate>
-              2026-10-30
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/">#量子计算</a>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#量子机器学习</a>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%87%AA%E7%BC%96%E7%A0%81%E5%99%A8/">#量子自编码器</a>
-            
-              <a href="/steven2004.github.io/tags/QAE/">#QAE</a>
-            
-              <a href="/steven2004.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#深度学习</a>
-            
-          </div>
-        
+      
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <a href="/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+          <time datetime="2026-10-30">2026.10.30</time>
+        </div>
+        <h3 class="index-header"><a href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/">量子自编码网络学习笔记</a></h3>
+        <p class="journal-card-excerpt">从经典自编码器（AE）到变分自编码器（VAE），再到量子自编码器（QAE）的完整脉络：偏迹压缩、参数化酉线路 U(θ)/V(φ)、保真度损失 1−F、参数移位法则与贫瘠高原。</p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/"># 量子计算</a><a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 量子机器学习</a></div>
+          <a class="journal-read" href="/steven2004.github.io/2026/10/30/quantum-autoencoder-notes/" aria-label="阅读全文：量子自编码网络学习笔记">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/steven2004.github.io/2026/10/11/tong-tu/" target="_self">
-          <img src="/steven2004.github.io/img/cover-tongtu.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="写给女朋友孙雨茜的一首诗">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/steven2004.github.io/2026/10/11/tong-tu/" target="_self">
-          写给女朋友孙雨茜的一首诗
-        </a>
-      </h2>
-
+  
+    <article class="index-card journal-card">
       
-      <a class="index-excerpt " href="/steven2004.github.io/2026/10/11/tong-tu/" target="_self">
-        <div>
-          回顾和孙雨茜度过的100天时光——写给女朋友孙雨茜的诗《同途》。
-        </div>
+      <a class="journal-card-cover" href="/steven2004.github.io/2026/10/11/tong-tu/" aria-label="阅读：写给女朋友孙雨茜的一首诗">
+        <img src="/steven2004.github.io/img/cover-tongtu.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" loading="lazy" decoding="async">
+        
       </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-10-11 02:28" pubdate>
-              2026-10-11
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/steven2004.github.io/categories/%E7%94%9F%E6%B4%BB/" class="category-chain-item">生活</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/steven2004.github.io/tags/%E8%AF%97/">#诗</a>
-            
-              <a href="/steven2004.github.io/tags/%E7%94%9F%E6%B4%BB/">#生活</a>
-            
-          </div>
-        
+      
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <a href="/steven2004.github.io/categories/%E7%94%9F%E6%B4%BB/">生活</a>
+          <time datetime="2026-10-11">2026.10.11</time>
+        </div>
+        <h3 class="index-header"><a href="/steven2004.github.io/2026/10/11/tong-tu/">写给女朋友孙雨茜的一首诗</a></h3>
+        <p class="journal-card-excerpt">回顾和孙雨茜度过的100天时光——写给女朋友孙雨茜的诗《同途》。</p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><a href="/steven2004.github.io/tags/%E8%AF%97/"># 诗</a><a href="/steven2004.github.io/tags/%E7%94%9F%E6%B4%BB/"># 生活</a></div>
+          <a class="journal-read" href="/steven2004.github.io/2026/10/11/tong-tu/" aria-label="阅读全文：写给女朋友孙雨茜的一首诗">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/steven2004.github.io/2026/10/10/quantum-math-notes/" target="_self">
-          <img src="/steven2004.github.io/img/cover-quantum.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="量子机器学习前置数学基础笔记">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/steven2004.github.io/2026/10/10/quantum-math-notes/" target="_self">
-          量子机器学习前置数学基础笔记
-        </a>
-      </h2>
-
+  
+    <article class="index-card journal-card">
       
-      <a class="index-excerpt " href="/steven2004.github.io/2026/10/10/quantum-math-notes/" target="_self">
-        <div>
-          为量子自编码器（QAE）学习整理的数学基础笔记：克罗内克积、狄拉克符号与内外积、迹与密度矩阵、迹距离与保真度、布洛赫球面、量子门基础，每节附自测习题。
-        </div>
+      <a class="journal-card-cover" href="/steven2004.github.io/2026/10/10/quantum-math-notes/" aria-label="阅读：量子机器学习前置数学基础笔记">
+        <img src="/steven2004.github.io/img/cover-quantum.jpg" srcset="/steven2004.github.io/img/loading.gif" lazyload alt="" width="960" height="540" loading="lazy" decoding="async">
+        
       </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2026-10-10 21:38" pubdate>
-              2026-10-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/">#量子计算</a>
-            
-              <a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">#量子机器学习</a>
-            
-              <a href="/steven2004.github.io/tags/%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0/">#线性代数</a>
-            
-              <a href="/steven2004.github.io/tags/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">#数学基础</a>
-            
-          </div>
-        
+      
+      <div class="journal-card-body">
+        <div class="journal-card-meta">
+          <a href="/steven2004.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
+          <time datetime="2026-10-10">2026.10.10</time>
+        </div>
+        <h3 class="index-header"><a href="/steven2004.github.io/2026/10/10/quantum-math-notes/">量子机器学习前置数学基础笔记</a></h3>
+        <p class="journal-card-excerpt">为量子自编码器（QAE）学习整理的数学基础笔记：克罗内克积、狄拉克符号与内外积、迹与密度矩阵、迹距离与保真度、布洛赫球面、量子门基础，每节附自测习题。</p>
+        <div class="journal-card-bottom">
+          <div class="journal-card-tags"><a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E8%AE%A1%E7%AE%97/"># 量子计算</a><a href="/steven2004.github.io/tags/%E9%87%8F%E5%AD%90%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"># 量子机器学习</a></div>
+          <a class="journal-read" href="/steven2004.github.io/2026/10/10/quantum-math-notes/" aria-label="阅读全文：量子机器学习前置数学基础笔记">阅读 <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
     </article>
+  
   </div>
+  
 
-
-
-
+  <div class="journal-closing"><span class="journal-dot" aria-hidden="true"></span><p>保持好奇，持续记录。</p><a href="/steven2004.github.io/atom.xml">通过 RSS 订阅 <span aria-hidden="true">↗</span></a></div>
+</section>
 
               </div>
             </div>
@@ -776,23 +537,6 @@
 <script  src="/steven2004.github.io/js/events.js" ></script>
 <script  src="/steven2004.github.io/js/plugins.js" ></script>
 
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        var texts = ["路漫漫其修远兮，吾将上下而求索。","博观而约取，厚积而薄发。","纸上得来终觉浅，绝知此事要躬行。","千淘万漉虽辛苦，吹尽狂沙始到金。","长风破浪会有时，直挂云帆济沧海。","会当凌绝顶，一览众山小。","山重水复疑无路，柳暗花明又一村。","宝剑锋从磨砺出，梅花香自苦寒来。","书山有路勤为径，学海无涯苦作舟。","问渠那得清如许？为有源头活水来。","不积跬步，无以至千里；不积小流，无以成江海。","锲而不舍，金石可镂。","十年磨一剑，霜刃未曾试。","沉舟侧畔千帆过，病树前头万木春。","咬定青山不放松，立根原在破岩中。","三更灯火五更鸡，正是男儿读书时。"];
-        var idx = Math.floor(Math.random() * texts.length);
-        typing(texts[idx]);
-      
-    })(window, document);
-  </script>
 
 
 
