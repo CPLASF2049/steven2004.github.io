@@ -1,0 +1,57 @@
+/* Touch-browser safety: do not combine long blurred surfaces, 3D layers and scroll animations. */
+@media (max-width: 991px), (hover: none), (pointer: coarse) {
+  body { background-image: none; background-attachment: scroll; background-color: var(--journal-bg); }
+  #board, #toc, .journal-feature, .index-card.journal-card, .modal-content {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background-color: var(--journal-surface);
+  }
+  .page-home #board { background: transparent; }
+  .index-card, .index-card.journal-card, .journal-feature,
+  .index-card.journal-card:hover, .journal-feature:hover {
+    transform: none !important;
+    transform-style: flat !important;
+    will-change: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+  .index-card.fx-reveal-play, .list-group-item.fx-reveal-play {
+    animation: none !important;
+    translate: none !important;
+    opacity: 1 !important;
+  }
+  .index-card::before, .index-card::after { content: none !important; }
+  .journal-card:hover .journal-card-cover img { transform: none !important; }
+  .journal-card-cover img, .journal-feature-image img { visibility: visible; opacity: 1; }
+  #navbar { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .hero-poetry { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(16,30,36,.72); }
+  #navbar .nav-link::before, .pagination .page-number::before,
+  .pagination .current::before, .pagination .extend::before { filter: none; }
+}
+@media (max-width: 767px) {
+  /* Explicit flow and intrinsic cover height also work in older mobile WebViews. */
+  .journal-feature, .index-card.journal-card { display: block; }
+  .journal-feature-image, .journal-card-cover {
+    position: relative;
+    width: 100%;
+    height: 0;
+    min-height: 0;
+    padding-top: 56.25%;
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+  .journal-feature-image img, .journal-card-cover img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: none !important;
+    transition: none;
+  }
+  .journal-feature-copy, .journal-card-body { min-width: 0; width: 100%; }
+  .journal-card-body { display: block; }
+  .journal-card-bottom { margin-top: 20px; }
+  .journal-feature-meta, .journal-card-meta { flex-wrap: wrap; gap: 6px 12px; }
+}

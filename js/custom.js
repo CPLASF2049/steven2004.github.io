@@ -331,14 +331,16 @@
   /* ================================================================ */
   function init() {
     if (!reduceMotion) {
-      if (finePointer) initCardEffect();
+      if (finePointer && mq('(min-width: 992px)')) {
+        initCardEffect();
+        initScrollReveal();
+      }
       initClickHearts();
-      initScrollReveal();
     }
     initDynamicTitle();
     initRuntime();
     initNavbarShadow();
-    initLiquidGlassFilter();
+    if (finePointer && mq('(min-width: 992px)')) initLiquidGlassFilter();
   }
 
   if (document.readyState === 'loading') {
