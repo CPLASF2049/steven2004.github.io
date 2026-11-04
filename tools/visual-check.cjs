@@ -24,7 +24,7 @@ async function main() {
     fs.createReadStream(file).pipe(res);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-  const origin = `http://127.0.0.1:${server.address().port}`;
+  const origin = process.env.BLOG_PREVIEW_ORIGIN || `http://127.0.0.1:${server.address().port}`;
   browser = spawn('C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', [
     '--headless=new', '--disable-gpu', '--no-first-run', '--no-default-browser-check',
     '--disable-extensions', '--disable-background-networking', '--remote-debugging-port=0',
@@ -69,17 +69,59 @@ async function main() {
       if (await evaluate(`document.readyState === 'complete' && !!document.querySelector('#board')`)) break;
       await sleep(150);
     }
-    await evaluate(`document.documentElement.setAttribute('data-user-color-scheme', '${dark ? 'dark' : 'light'}'); document.querySelectorAll('img[lazyload]').forEach(i => { i.removeAttribute('srcset'); i.removeAttribute('lazyload'); });`);
+    // Never modify image attributes: verify exactly what a visitor receives.
+    await evaluate(`document.documentElement.setAttribute('data-user-color-scheme', '${dark ? 'dark' : 'light'}');`);
     await sleep(1000);
     if (scrollSelector) await evaluate(`document.querySelector(${JSON.stringify(scrollSelector)})?.scrollIntoView(); window.scrollBy(0, -100);`);
-    await sleep(150);
-    const info = await evaluate(`(() => ({title: document.title, width: innerWidth, scrollWidth: document.documentElement.scrollWidth, css: [...document.styleSheets].filter(s => s.href).map(s => {try{return {href:s.href, rules:s.cssRules.length}}catch{return {href:s.href,crossOrigin:true}}}), images: [...document.images].filter(i => i.getBoundingClientRect().top < innerHeight && i.getBoundingClientRect().bottom > 0).map(i=>({src:i.src,ok:i.complete&&i.naturalWidth>0})), headings: [...document.querySelectorAll('h1')].map(e=>e.textContent), cards: document.querySelectorAll('.journal-card').length, bodyColor: getComputedStyle(document.body).backgroundColor, overflow: [...document.querySelectorAll('body *')].filter(e => {const r=e.getBoundingClientRect();return r.width>0 && r.right>innerWidth+2 && getComputedStyle(e).position!=='fixed' && !e.closest('pre,table,.katex-display,.modal')}).slice(0,8).map(e=>e.tagName+'.'+e.className) }))()`);
+    for (let n = 0; n < 40; n++) {
+      const ready = await evaluate(`Array.from(document.images).filter(i => i.getBoundingClientRect().top < innerHeight && i.getBoundingClientRect().bottom > 0).every(i => i.complete && i.naturalWidth > 0 && i.currentSrc === i.src)`);
+      if (ready) break;
+      await sleep(150);
+    }
+    const info = await evaluate(`(() => ({title: document.title, width: innerWidth, scrollWidth: document.documentElement.scrollWidth, css: [...document.styleSheets].filter(s => s.href).map(s => {try{return {href:s.href, rules:s.cssRules.length}}catch{return {href:s.href,crossOrigin:true}}}), images: [...document.images].filter(i => i.getBoundingClientRect().top < innerHeight && i.getBoundingClientRect().bottom > 0).map(i=>({src:i.src,currentSrc:i.currentSrc,naturalWidth:i.naturalWidth,ok:i.complete&&i.naturalWidth>0&&i.currentSrc===i.src&&!i.hasAttribute('lazyload')})), headings: [...document.querySelectorAll('h1')].map(e=>e.textContent), cards: document.querySelectorAll('.journal-card').length, bodyColor: getComputedStyle(document.body).backgroundColor, overflow: [...document.querySelectorAll('body *')].filter(e => {const r=e.getBoundingClientRect();return r.width>0 && r.right>innerWidth+2 && getComputedStyle(e).position!=='fixed' && !e.closest('pre,table,.katex-display,.modal')}).slice(0,8).map(e=>e.tagName+'.'+e.className) }))()`);
     const design = await evaluate(`(() => { const banner=document.querySelector('.header-inner'); const latest=document.querySelector('.journal-latest'); const cards=[...document.querySelectorAll('.journal-card')]; const toc=document.querySelector('#toc-body > ol > li > a'); const glass=document.querySelector('.journal-feature') || document.querySelector('#board'); return {bannerHeight:banner?.getBoundingClientRect().height, latestBelowBanner:!latest || latest.getBoundingClientRect().top >= banner.getBoundingClientRect().bottom - 2, singleColumn:cards.every((c,i)=>!i || c.getBoundingClientRect().top >= cards[i-1].getBoundingClientRect().bottom - 2), tocFont:toc ? getComputedStyle(toc).fontSize : null, glassBlur:glass ? getComputedStyle(glass).backdropFilter : null}; })()`);
     Object.assign(info, design);
     const image = await call('Page.captureScreenshot', { format:'png', captureBeyondViewport:false });
     fs.writeFileSync(path.join(out, name + '.png'), Buffer.from(image.data, 'base64'));
     results.push({ name, ...info });
     console.log(JSON.stringify({name,width:info.width,scrollWidth:info.scrollWidth,cards:info.cards,images:info.images.length,overflow:info.overflow}));
+  }
+  async function auditImages(route, name, withoutScripts = false) {
+    await call('Emulation.setScriptExecutionDisabled', {value:withoutScripts});
+    await call('Network.setCacheDisabled', {cacheDisabled:true});
+    await call('Page.navigate', {url:origin + prefix + route});
+    for (let n=0; n<100; n++) {
+      if (await evaluate(`document.readyState === 'complete' && !!document.querySelector('#board')`)) break;
+      await sleep(150);
+    }
+    const count = await evaluate('document.images.length');
+    const images = [];
+    for (let i=0; i<count; i++) {
+      await evaluate(`document.images[${i}].scrollIntoView({block:'center'})`);
+      let result;
+      for (let n=0;n<40;n++) {
+        result = await evaluate(`(() => {const i=document.images[${i}];return {src:i.src,currentSrc:i.currentSrc,naturalWidth:i.naturalWidth,ok:i.complete&&i.naturalWidth>0&&i.currentSrc===i.src&&!i.hasAttribute('lazyload')}})()`);
+        if (result.ok) break;
+        await sleep(150);
+      }
+      images.push(result);
+    }
+    await call('Emulation.setScriptExecutionDisabled', {value:false});
+    results.push({name,images});
+    console.log(JSON.stringify({name,count,loaded:images.filter(i=>i.ok).length,failures:images.filter(i=>!i.ok)}));
+  }
+  await auditImages('', 'all-home-images');
+  await auditImages('2026/10/30/quantum-autoencoder-notes/', 'all-article-images');
+  await auditImages('about/', 'about-image');
+  await auditImages('', 'home-images-without-javascript', true);
+  if (process.env.BLOG_IMAGES_ONLY === '1') {
+    await visit('image-fix-live', '', 1440, 1000, false, '#latest-post');
+    const failed = results.some(r=>r.images?.some(i=>!i.ok));
+    fs.writeFileSync(path.join(out,'image-check.json'),JSON.stringify({results,errors},null,2));
+    await call('Browser.close');
+    if (failed) throw new Error('Actual browser image loading failed.');
+    console.log('All actual images loaded, including without JavaScript.');
+    return;
   }
   await visit('home-desktop', '', 1440, 1000);
   await visit('home-latest', '', 1440, 1000, false, '#latest-post');

@@ -59,6 +59,10 @@ font:
   letter_spacing: 0.02em
   code_font_size: 85%
 
+# 图片直接使用真实 src；卡片保留浏览器原生 loading=lazy，避免脚本占位图卡住。
+lazyload:
+  enable: false
+
 # 自定义样式与脚本（路径相对 source 目录）
 custom_css:
   - /css/custom.css
