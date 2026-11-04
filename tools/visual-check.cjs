@@ -114,6 +114,45 @@ async function main() {
   await auditImages('2026/10/30/quantum-autoencoder-notes/', 'all-article-images');
   await auditImages('about/', 'about-image');
   await auditImages('', 'home-images-without-javascript', true);
+  if (process.env.BLOG_HERO_ONLY === '1') {
+    await visit('hero-desktop', '', 1440, 1000);
+    await visit('hero-mobile', '', 390, 844);
+    const reduced = await evaluate(`document.querySelector('.hero-writing').classList.contains('is-paused') && !!document.querySelector('[data-hero-verse]').textContent`);
+    await call('Emulation.setScriptExecutionDisabled', {value:true});
+    await call('Page.navigate', {url:origin+prefix});
+    await sleep(1800);
+    const fallback = await evaluate(`!!document.querySelector('[data-hero-title]')?.textContent && !!document.querySelector('[data-hero-verse]')?.textContent`);
+    await call('Emulation.setScriptExecutionDisabled', {value:false});
+    await call('Emulation.setEmulatedMedia', {features:[{name:'prefers-reduced-motion',value:'no-preference'}]});
+    await call('Page.navigate', {url:origin+prefix});
+    for (let n=0;n<100;n++) { if(await evaluate(`document.querySelector('.hero-writing')?.dataset.typewriterReady === 'true'`)) break; await sleep(100); }
+    const titleA = await evaluate(`document.querySelector('[data-hero-title]').textContent`);
+    await sleep(500);
+    const titleB = await evaluate(`document.querySelector('[data-hero-title]').textContent`);
+    await evaluate(`document.querySelector('[data-hero-next]').click()`);
+    await sleep(450);
+    const verseA = await evaluate(`document.querySelector('[data-hero-verse]').textContent`);
+    await sleep(550);
+    const verseB = await evaluate(`document.querySelector('[data-hero-verse]').textContent`);
+    await evaluate(`document.querySelector('[data-hero-pause]').click()`);
+    const pausedVerse = await evaluate(`document.querySelector('[data-hero-verse]').textContent`);
+    await sleep(350);
+    const pausedWorks = await evaluate(`document.querySelector('[data-hero-pause]').getAttribute('aria-pressed') === 'true' && document.querySelector('[data-hero-verse]').textContent === ${JSON.stringify(pausedVerse)}`);
+    await evaluate(`document.querySelector('[data-hero-next]').click()`);
+    const nextWorks = await evaluate(`document.querySelector('[data-hero-verse]').textContent !== ${JSON.stringify(pausedVerse)}`);
+    const oldIndex = await evaluate(`document.querySelector('[data-hero-count]').textContent`);
+    await evaluate(`document.querySelector('[data-hero-pause]').click()`);
+    let cycles = false;
+    for(let n=0;n<100;n++) { cycles=await evaluate(`document.querySelector('[data-hero-count]').textContent !== ${JSON.stringify(oldIndex)}`); if(cycles)break; await sleep(150); }
+    const poemCount = await evaluate(`JSON.parse(document.querySelector('.hero-writing').dataset.poems).length`);
+    const checks = {reduced,fallback,titleTypes:titleA!==titleB,verseTypes:verseA!==verseB,pausedWorks,nextWorks,cycles,poemCount};
+    console.log(JSON.stringify(checks));
+    fs.writeFileSync(path.join(out,'hero-check.json'),JSON.stringify({checks,results,errors},null,2));
+    await call('Browser.close');
+    if(Object.entries(checks).some(([k,v])=>k==='poemCount'?v<30:!v) || errors.length || results.some(r=>r.images?.some(i=>!i.ok))) throw new Error('Hero checks failed');
+    console.log('Hero typing, rotation, controls, fallback and images passed.');
+    return;
+  }
   if (process.env.BLOG_IMAGES_ONLY === '1') {
     await visit('image-fix-live', '', 1440, 1000, false, '#latest-post');
     const failed = results.some(r=>r.images?.some(i=>!i.ok));

@@ -67,8 +67,10 @@ lazyload:
 custom_css:
   - /css/custom.css
   - /css/editorial.css
+  - /css/hero-writing.css
 custom_js:
   - /js/custom.js
+  - /js/hero-writing.js
 
 # ---------- 页头 ----------
 navbar:

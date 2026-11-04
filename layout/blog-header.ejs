@@ -1,14 +1,34 @@
 <%
 const home = is_home();
 const height = parseFloat(page.banner_img_height || theme.index.banner_img_height);
+const poems = site.data.hero_poems || [];
+const firstPoem = poems[0];
 %>
 <a class="skip-link" href="#board">跳到正文</a>
 <div class="header-inner <%= home ? 'journal-header' : '' %>" style="height: <%= height %>vh;">
   <%- partial('_partials/header/navigation') %>
   <% if (home) { %>
-  <div id="banner" class="banner home-image-banner" role="img" aria-label="博客首页头图" style="background: url('<%= url_for(theme.index.banner_img) %>') no-repeat center center; background-size: cover;">
+  <div id="banner" class="banner home-image-banner" aria-label="博客首页头图与古诗" style="background: url('<%= url_for(theme.index.banner_img) %>') no-repeat center center; background-size: cover;">
     <div class="full-bg-img">
       <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.12)">
+        <div class="hero-writing" data-poems="<%= JSON.stringify(poems) %>">
+          <p class="hero-kicker">记录 · 探索 · 热爱</p>
+          <div class="hero-title" aria-label="<%= config.title %>"><span data-hero-title aria-hidden="true"><%= config.title %></span><span class="hero-cursor hero-title-cursor" aria-hidden="true">|</span></div>
+          <p class="hero-tagline">记录计算机学习，探索技术，也珍藏生活。</p>
+          <% if (firstPoem) { %>
+          <div class="hero-poetry">
+            <span class="hero-poetry-label">诗意常在 · 与你共读</span>
+            <p class="hero-verse" aria-hidden="true"><span data-hero-verse><%= firstPoem.text %></span><span class="hero-cursor" aria-hidden="true">|</span></p>
+            <p class="hero-poem-source" data-hero-source aria-hidden="true">— <%= firstPoem.author %>《<%= firstPoem.work %>》</p>
+            <p class="sr-only" data-hero-accessible><%= firstPoem.text %> — <%= firstPoem.author %>《<%= firstPoem.work %>》</p>
+            <div class="hero-poem-controls" hidden>
+              <span data-hero-count>01 / <%= poems.length %></span>
+              <button type="button" data-hero-pause aria-pressed="false">暂停轮播</button>
+              <button type="button" data-hero-next>换一句 <span aria-hidden="true">↻</span></button>
+            </div>
+          </div>
+          <% } %>
+        </div>
         <a class="scroll-down-bar" href="#board" aria-label="向下浏览文章"><i class="iconfont icon-arrowdown" aria-hidden="true"></i></a>
       </div>
     </div>
