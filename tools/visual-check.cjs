@@ -110,6 +110,36 @@ async function main() {
     results.push({name,images});
     console.log(JSON.stringify({name,count,loaded:images.filter(i=>i.ok).length,failures:images.filter(i=>!i.ok)}));
   }
+  if (process.env.BLOG_POST_ONLY) {
+    const route = process.env.BLOG_POST_ONLY.replace(/^\/+/, '');
+    await auditImages(route, 'post-images');
+    await visit('post-desktop', route, 1440, 1000);
+    await visit('post-mobile', route, 390, 844);
+    await visit('post-table', route, 390, 844, false, '.markdown-body table');
+    await visit('post-dark', route, 1440, 1000, true);
+    const audit = await evaluate(`(() => {
+      const body = document.querySelector('.markdown-body');
+      return {
+        tables: body.querySelectorAll('table').length,
+        figures: body.querySelectorAll('img').length,
+        math: document.querySelectorAll('.katex').length,
+        mathErrors: document.querySelectorAll('.katex-error').length,
+        codeBlocks: body.querySelectorAll('pre code').length,
+        headings: body.querySelectorAll('h2').length,
+        tocLinks: document.querySelectorAll('#toc-body a').length,
+        rawDollar: (body.textContent.match(/\\$\\$/g) || []).length,
+        title: document.querySelector('#seo-header')?.textContent.trim() || '',
+        category: document.querySelector('.post-meta a')?.textContent.trim() || ''
+      };
+    })()`);
+    console.log(JSON.stringify(audit, null, 2));
+    fs.writeFileSync(path.join(out,'post-check.json'),JSON.stringify({audit,results,errors},null,2));
+    await call('Browser.close');
+    const badTable = results.filter(r=>r.name.startsWith('post-table')).some(r=>r.overflow.some(o=>!/license-icon|icon-arrowup/.test(o)));
+    if (audit.tables !== 5 || audit.figures !== 5 || audit.math < 3 || audit.mathErrors || audit.rawDollar || !audit.title || errors.length || badTable || results.some(r=>r.images?.some(i=>!i.ok))) throw new Error('Post verification failed');
+    console.log('Article figures, tables, formulas, TOC and mobile layout passed.');
+    return;
+  }
   if (process.env.BLOG_TOUCH_ONLY === '1') {
     await call('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:5});
     await call('Emulation.setUserAgentOverride',{userAgent:'Mozilla/5.0 (Linux; Android 12; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36'});

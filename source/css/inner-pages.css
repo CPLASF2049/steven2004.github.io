@@ -84,7 +84,7 @@
 .reading-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 0 20px; margin-bottom: 26px; border-bottom: 1px solid var(--journal-line); }
 .markdown-body .reading-toolbar a { text-decoration: none; }
 .reading-mark { white-space: nowrap; color: var(--journal-muted); font-size: .76rem; }
-.mobile-reading-toc { display: none; }
+.mobile-reading-toc { display: none !important; }
 .page-post .markdown-body > blockquote:first-of-type { border-radius: 0 14px 14px 0; }
 .page-post .markdown-body h2 { position: relative; padding-left: 14px; border-left: 3px solid var(--journal-accent); }
 .page-post .markdown-body pre { box-shadow: inset 0 1px 0 rgba(255,255,255,.05); padding: 20px; }
@@ -99,8 +99,12 @@
   .about-section-nav { position: static; border-left: 0; border-bottom: 1px solid var(--journal-line); padding: 0 0 16px; }
   .about-section-nav ol { display: flex; gap: 8px 18px; flex-wrap: wrap; }
   .about-section-nav li { margin: 0; }
-  .mobile-reading-toc { display: block; border: 1px solid var(--journal-line); background: var(--journal-soft); border-radius: 12px; padding: 0 16px; margin: 0 0 28px; }
-  .mobile-reading-toc summary { cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 54px; font-size: 1rem; font-weight: 600; color: var(--journal-ink); }
+  .mobile-reading-toc { display: block !important; border: 1px solid var(--journal-line); background: var(--journal-soft); border-radius: 12px; padding: 0 16px; margin: 0 0 28px; }
+  .mobile-reading-toc summary { cursor: pointer; display: flex !important; justify-content: space-between; align-items: center; gap: 12px; min-height: 54px; font-size: 1rem; font-weight: 600; color: var(--journal-ink); list-style: none; }
+  .mobile-reading-toc summary::-webkit-details-marker { display: none; }
+  .mobile-toc-label { display: inline-flex; align-items: center; gap: 9px; }
+  .mobile-toc-label::before { content: ""; width: 0; height: 0; border-left: 6px solid currentColor; border-top: 5px solid transparent; border-bottom: 5px solid transparent; transition: transform .2s; }
+  .mobile-reading-toc[open] .mobile-toc-label::before { transform: rotate(90deg); }
   .mobile-toc-hint { font-size: .7rem; font-weight: 400; color: var(--journal-muted); }
   .mobile-reading-toc nav { max-height: 48vh; overflow-y: auto; padding: 5px 0 16px; }
   .mobile-reading-toc ol { list-style: none; padding-left: 16px; margin: 0; }
