@@ -11,7 +11,7 @@ tags:
   - 概率校准
 description: 拆解 Laya 的模型结构：ModernBERT / mmBERT 主干、把问题与候选项写进序列的输入设计、Scorer 与 act_head 双分支、RLCD 概率优化与温度校准，以及 Router、HTTP 与 Agent 集成。
 index_img: /img/cover-laya.jpg
-banner_img: /img/cover-laya.jpg
+banner_img: /img/laya-banner.jpg
 ---
 
 > 一篇面向开发者的 Laya 架构解读：讲清楚它的 BERT 主干究竟是什么、问题和选项如何进入模型、两个决策输出分支分别做什么、RLCD 怎样训练概率分布。
